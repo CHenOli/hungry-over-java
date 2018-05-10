@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <!-- Logo -->
+            <ImageView
+                android:contentDescription="@string/app_name"
+                android:layout_width="400dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="0dp"
+                android:src="@drawable/logo" />
+
+            <!-- Label do Email -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:textColor="@android:color/white">
+                <EditText android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@android:color/white"
+                    android:hint="Email" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Label da Senha -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="5dp">
+                <EditText android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@android:color/white"
+                    android:hint="Senha"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- Botão Entrar -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="24dp"
+                android:padding="12dp"
+                android:background="@drawable/ripple"
+                android:foreground="@drawable/my_border"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="ENTRAR"/>
+
+            <!-- Text "Não tem conta" -->
+            <TextView
+                android:id="@+id/link_signup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:background="#50FFFFFF"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:text="Não tem uma conta? Crie já!"
+                android:textSize="16sp" />
+
+            <!-- Text "Esqueceu a senha" -->
+            <TextView
+                android:id="@+id/link_forgotpassword"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:background="#50FFFFFF"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:text="Esqueci minha senha!"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
