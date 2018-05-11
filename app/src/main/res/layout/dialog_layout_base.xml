@@ -12,22 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
-        android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="10dp"
         android:textColor="@color/text_title"
-        android:textSize="20sp"
-        android:text="Auntenticando!" />
-
-    <ScrollView
-        android:id="@+id/scrolltext"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="24dp"
-        android:layout_weight="1"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:scrollbarStyle="outsideOverlay" >
+        android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_secondary"
-                android:text="Só mais um momento..."
                 android:textSize="15sp" />
 
             <ProgressBar
@@ -48,31 +34,11 @@
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                 android:layout_gravity="center"
-                android:paddingTop="50dp"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
                 android:layout_width="85dp"
                 android:layout_height="150dp"
                 android:indeterminateTint="#4dd0e1"
                 android:indeterminateTintMode="src_atop" />
         </LinearLayout>
-    </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp" >
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:gravity="center|right"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp" >
-
-    </LinearLayout>
 </LinearLayout>

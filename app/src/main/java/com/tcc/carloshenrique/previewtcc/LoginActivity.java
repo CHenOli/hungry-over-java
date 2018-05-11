@@ -1,12 +1,9 @@
 package com.tcc.carloshenrique.previewtcc;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.support.v7.app.AlertDialog;
 
 import android.content.Intent;
 import android.util.Patterns;
@@ -64,10 +61,20 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        new AlertDialog.Builder(this)
-                .setTitle("Autenticando!")
-                .setMessage("Quase lá. Aguarde só mais um pouquinho.")
-                .show();
+        final MaterialLoginDialog dialog = new MaterialLoginDialog(LoginActivity.this);
+        dialog.setTitle("Autenticando")
+              //Use this if you want to set a text message
+              .setMessage("Só mais um momentinho...")
+
+              //Use this for a custom layout resource
+              //.setCustomViewResource(R.layout.dialog_layout_base)
+
+              //Or pass the View
+              //.setCustomView(yourView);
+
+              //Set cancelable on touch outside (default true)
+              .dismissOnTouchOutside(false);
+        dialog.show();
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
@@ -79,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     onLoginSuccess();
+                    dialog.dismiss();
                 }
             }, 3000);
 
@@ -86,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     onLoginFailed();
+                    dialog.dismiss();
                 }
             }, 3000);
         }
