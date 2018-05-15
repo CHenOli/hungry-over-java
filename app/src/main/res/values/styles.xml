@@ -15,6 +15,9 @@
 
         <!-- Layout para o DrawerLayout -->
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+
+        <!-- Barra de status transparente -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
