@@ -86,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:background="#50FFFFFF"
+                android:foreground="@drawable/ripple"
                 android:padding="8dp"
                 android:textColor="@android:color/white"
                 android:text="Já tem uma conta? Entre!"

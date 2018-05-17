@@ -8,19 +8,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:paddingTop="30dp"
-        android:src="@drawable/logo" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="250dp"
+            android:paddingTop="50dp"
+            android:src="@drawable/logo" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/loading_spinner"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-        android:paddingBottom="75dp"
         android:layout_width="85dp"
         android:layout_height="200dp"
         android:indeterminateTint="#4dd0e1"
