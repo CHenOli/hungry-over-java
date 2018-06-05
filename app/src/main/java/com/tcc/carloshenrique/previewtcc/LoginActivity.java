@@ -2,6 +2,7 @@ package com.tcc.carloshenrique.previewtcc;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -28,12 +29,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Essa linha esconde a Barra de Notificações
+        //Essas linhas esconde a Barra de Notificações
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_login);
+
+        //Background pelo código, pode ser útil no fim
         //getWindow().setBackgroundDrawableResource(R.drawable.login_bg);
         ButterKnife.bind(this);
 
@@ -125,14 +128,15 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        Intent menuIntent = new Intent(LoginActivity.this, MenuActivity.class);
+        Intent menuIntent = new Intent(LoginActivity.this, CodeReaderActivity.class);
         menuIntent.putExtra("email", _emailText.getText().toString());
         startActivity(menuIntent);
         finish();
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Falha no login!", Toast.LENGTH_LONG).show();
+        Snackbar.make(_loginButton, "Falha no login.", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
         _loginButton.setEnabled(true);
     }
 

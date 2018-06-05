@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:textColor="@android:color/white"
-                    android:hint="Email" />
+                    android:hint="@string/email" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Label da Senha -->
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textColor="@android:color/white"
-                    android:hint="Senha"/>
+                    android:hint="@string/senha"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -73,7 +73,7 @@
                 android:foreground="@drawable/my_border"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:text="ENTRAR"/>
+                android:text="@string/btn_entrar"/>
 
             <!-- Text "Não tem conta" -->
             <TextView
@@ -86,7 +86,7 @@
                 android:foreground="@drawable/ripple"
                 android:padding="8dp"
                 android:textColor="@android:color/white"
-                android:text="Não tem uma conta? Crie já!"
+                android:text="@string/sem_conta"
                 android:textSize="16sp" />
 
             <!-- Text "Esqueceu a senha" -->
@@ -99,7 +99,7 @@
                 android:foreground="@drawable/ripple"
                 android:padding="8dp"
                 android:textColor="@android:color/white"
-                android:text="Esqueci minha senha!"
+                android:text="@string/esqueceu_senha"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>

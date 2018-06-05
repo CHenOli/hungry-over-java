@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AutoFood</string>
+    <string name="app_name">HungryOver</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -12,11 +12,29 @@
     <string name="error_field_required">Por favor, preencha esse campo</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions.</string>
-    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_menu">Bem-vindo(a)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!-- activity_login strings -->
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="btn_entrar">ENTRAR</string>
+    <string name="sem_conta">Não tem uma conta? Crie já!</string>
+    <string name="esqueceu_senha">Esqueci minha senha</string>
+
+    <!-- activity_signup strings -->
+    <string name="nome">Nome</string>
+    <string name="registrar">REGISTRAR</string>
+    <string name="confirmar_senha">Confirme a senha</string>
+    <string name="tem_conta">Já tem uma conta? Entre já</string>
+
+    <!-- activity_code_read -->
+    <string name="leitura">Escaneie o código da mesa ou, se preferir,</string>
+    <string name="prosseguir">PROSSIGA</string>
+
 </resources>

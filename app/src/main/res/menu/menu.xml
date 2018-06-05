@@ -11,9 +11,4 @@
         android:orderInCategory="100"
         android:title="Ajuda"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/config"
-        android:orderInCategory="100"
-        android:title="Configurações"
-        app:showAsAction="never" />
 </menu>

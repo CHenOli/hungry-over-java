@@ -38,8 +38,8 @@ public class MaterialLoginDialog extends AlertDialog {
         mTitle = (TextView) findViewById(android.R.id.text1);
         mContent = (TextView) findViewById(android.R.id.text2);
 
-        mTitle.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Medium.ttf"));
-        mContent.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Regular.ttf"));
+        mTitle.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_medium.ttf"));
+        mContent.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_regular.ttf"));
     }
 
     @Override

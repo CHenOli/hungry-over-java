@@ -31,6 +31,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/fork_spoon" />
+        app:srcCompat="@drawable/ic_dinner_white" />
 
 </android.support.design.widget.CoordinatorLayout>
