@@ -18,9 +18,10 @@
             android:layout_height="wrap_content"
             android:paddingBottom="250dp"
             android:paddingTop="50dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo_main" />
     </LinearLayout>
 
+    <!-- Cor Antiga: #4dd0e1 -->
     <ProgressBar
         android:id="@+id/loading_spinner"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
@@ -28,7 +29,7 @@
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         android:layout_width="85dp"
         android:layout_height="200dp"
-        android:indeterminateTint="#4dd0e1"
+        android:indeterminateTint="#6E6E6E"
         android:indeterminateTintMode="src_atop"
         tools:layout_editor_absoluteX="0dp" />
 </android.support.constraint.ConstraintLayout>

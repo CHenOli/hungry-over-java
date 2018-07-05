@@ -45,7 +45,7 @@
                     android:foreground="@drawable/ripple"
                     android:text="Pizzas"
                     android:fontFamily="@font/roboto_thin"
-                    android:textSize="45dp"
+                    android:textSize="45sp"
                     android:textColor="@android:color/white"/>
             </FrameLayout>
 
@@ -71,7 +71,7 @@
                     android:foreground="@drawable/ripple"
                     android:text="Lanches"
                     android:fontFamily="@font/roboto_thin"
-                    android:textSize="40dp"
+                    android:textSize="40sp"
                     android:textColor="@android:color/white"/>
             </FrameLayout>
 
@@ -97,7 +97,7 @@
                     android:foreground="@drawable/ripple"
                     android:text="Pratos"
                     android:fontFamily="@font/roboto_thin"
-                    android:textSize="40dp"
+                    android:textSize="40sp"
                     android:textColor="@android:color/white"/>
             </FrameLayout>
 
@@ -122,7 +122,7 @@
                     android:foreground="@drawable/ripple"
                     android:text="Sucos"
                     android:textColor="@android:color/white"
-                    android:textSize="40dp" />
+                    android:textSize="40sp" />
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
