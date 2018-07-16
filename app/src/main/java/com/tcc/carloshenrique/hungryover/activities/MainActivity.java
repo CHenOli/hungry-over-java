@@ -1,11 +1,12 @@
-package com.tcc.carloshenrique.previewtcc;
+package com.tcc.carloshenrique.hungryover.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
+
+import com.tcc.carloshenrique.hungryover.R;
 
 
 public class MainActivity extends AppCompatActivity{

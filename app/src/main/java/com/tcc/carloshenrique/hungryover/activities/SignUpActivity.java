@@ -1,4 +1,4 @@
-package com.tcc.carloshenrique.previewtcc;
+package com.tcc.carloshenrique.hungryover.activities;
 
 
 import android.app.ProgressDialog;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.tcc.carloshenrique.hungryover.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

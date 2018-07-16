@@ -1,4 +1,4 @@
-package com.tcc.carloshenrique.previewtcc;
+package com.tcc.carloshenrique.hungryover.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,15 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
+import com.tcc.carloshenrique.hungryover.R;
+import com.tcc.carloshenrique.hungryover.models.UserModel;
+import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -29,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Essas linhas esconde a Barra de Notificações
+        //Essas linhas escondem a Barra de Notificações
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
@@ -40,11 +46,20 @@ public class LoginActivity extends AppCompatActivity {
         //getWindow().setBackgroundDrawableResource(R.drawable.login_bg);
         ButterKnife.bind(this);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://hungry-over-api.herokuapp.com/clientes/")
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final UserService clienteService = retrofit.create(UserService.class);
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                login();
+                String email = _emailText.getText().toString();
+                String password = _passwordText.getText().toString();
+                login(email, password, clienteService);
             }
         });
 
@@ -59,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login() {
+    public void login(String email, String password, UserService clienteService) {
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -69,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final MaterialLoginDialog dialog = new MaterialLoginDialog(LoginActivity.this);
+        final MaterialSimpleDialog dialog = new MaterialSimpleDialog(LoginActivity.this);
         dialog.setTitle("Autenticando")
               //Use this if you want to set a text message
               .setMessage("Só mais um momentinho...")
@@ -84,12 +99,10 @@ public class LoginActivity extends AppCompatActivity {
               .dismissOnTouchOutside(false);
         dialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        Call<UserModel> callEmail = clienteService.getEmail(email);
+        Call<UserModel> callPassword = clienteService.getPassword(password);
 
-        if(email.equalsIgnoreCase("oliveira.caco.h@gmail.com") ||
-                email.equalsIgnoreCase("eduardojpilla@gmail.com") ||
-                email.equalsIgnoreCase("italoox96@gmail.com")) {
+        if(_emailText.toString().equalsIgnoreCase(callEmail.toString())) /*&& password.equals(null))*/{
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -143,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
+        /*String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -158,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             valid = false;
         } else {
             _passwordText.setError(null);
-        }
+        }*/
 
         return valid;
     }

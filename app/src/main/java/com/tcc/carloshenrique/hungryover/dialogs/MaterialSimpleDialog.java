@@ -1,18 +1,18 @@
-package com.tcc.carloshenrique.previewtcc;
+package com.tcc.carloshenrique.hungryover.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class MaterialLoginDialog extends AlertDialog {
+import com.tcc.carloshenrique.hungryover.R;
+
+public class MaterialSimpleDialog extends AlertDialog {
 
     private Context mContext;
     private TextView mTitle;
@@ -26,7 +26,7 @@ public class MaterialLoginDialog extends AlertDialog {
     private Integer customResId;
     private boolean canDismiss = true;
 
-    public MaterialLoginDialog(Context context) {
+    public MaterialSimpleDialog(Context context) {
         super(context);
         this.mContext = context;
     }
@@ -57,27 +57,27 @@ public class MaterialLoginDialog extends AlertDialog {
 
     }
 
-    public MaterialLoginDialog setTitle(String t) {
+    public MaterialSimpleDialog setTitle(String t) {
         this.title = t;
         return this;
     }
 
-    public MaterialLoginDialog setMessage(String m) {
+    public MaterialSimpleDialog setMessage(String m) {
         this.contentText = m;
         return this;
     }
 
-    public MaterialLoginDialog setCustomView(View v) {
+    public MaterialSimpleDialog setCustomView(View v) {
         this.customView = v;
         return this;
     }
 
-    public MaterialLoginDialog setCustomViewResource(int ResId) {
+    public MaterialSimpleDialog setCustomViewResource(int ResId) {
         this.customResId = ResId;
         return this;
     }
 
-    public MaterialLoginDialog dismissOnTouchOutside(boolean dismiss) {
+    public MaterialSimpleDialog dismissOnTouchOutside(boolean dismiss) {
         this.canDismiss = dismiss;
         return this;
     }

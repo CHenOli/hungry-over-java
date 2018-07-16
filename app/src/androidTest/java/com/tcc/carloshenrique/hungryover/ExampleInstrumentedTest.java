@@ -1,4 +1,4 @@
-package com.tcc.carloshenrique.previewtcc;
+package com.tcc.carloshenrique.hungryover;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
