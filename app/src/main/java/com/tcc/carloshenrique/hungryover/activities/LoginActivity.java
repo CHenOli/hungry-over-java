@@ -1,5 +1,6 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -7,19 +8,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -47,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungry-over-api.herokuapp.com/clientes/")
+                .baseUrl("https://hungry-over-api.herokuapp.com/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
@@ -74,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login(String email, String password, UserService clienteService) {
+    public void login(final String email, String password, UserService clienteService) {
         Log.d(TAG, "Login");
 
         if (!validate()) {
-            //onLoginFailed();
+            onLoginFailed();
             return;
         }
 
@@ -99,33 +106,47 @@ public class LoginActivity extends AppCompatActivity {
               .dismissOnTouchOutside(false);
         dialog.show();
 
-        Call<UserModel> callEmail = clienteService.getEmail(email);
-        Call<UserModel> callPassword = clienteService.getPassword(password);
+        Call<List<UserModel>> call = clienteService.all();
+        call.enqueue(new Callback<List<UserModel>>() {
+            @Override
+            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+                int statusCode = response.code();
+                List<UserModel> user = response.body();
 
-        if(_emailText.toString().equalsIgnoreCase(callEmail.toString())) /*&& password.equals(null))*/{
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onLoginSuccess();
-                    dialog.dismiss();
+                for(int i = 0; i < user.size(); i++) {
+                    //Log.w("RETROFIT", user.get(i).getNome() + " " + i);
+                    if (_emailText.getText().toString().equalsIgnoreCase(user.get(i).getEmail())
+                            && (_passwordText.getText().toString().equals(user.get(i).getSenha()))) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                onLoginSuccess();
+                                dialog.dismiss();
+                            }
+                        }, 3000);
+                    }
                 }
-            }, 3000);
 
-        }else {
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    onLoginFailed();
-                    dialog.dismiss();
-                }
-            }, 3000);
-        }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        onLoginFailed();
+                        dialog.dismiss();
+                        return;
+                    }
+                 }, 3000);
+            }
+            @Override
+            public void onFailure(Call<List<UserModel>> call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
                 this.finish();
@@ -156,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        /*String email = _emailText.getText().toString();
+        String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -166,12 +187,12 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 8) {
+        if (password.isEmpty() || password.length() < 6) {
             _passwordText.setError("Senha muito curta");
             valid = false;
         } else {
             _passwordText.setError(null);
-        }*/
+        }
 
         return valid;
     }

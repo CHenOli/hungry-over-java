@@ -1,68 +1,77 @@
 package com.tcc.carloshenrique.hungryover.models;
+
 import com.squareup.moshi.Json;
 
 public class UserModel {
-    public class Example {
 
-        @Json(name = "id")
-        private long id;
-        @Json(name = "nome")
-        private String nome;
-        @Json(name = "email")
-        private String email;
-        @Json(name = "senha")
-        private String senha;
+    @Json(name = "id")
+    private Integer id;
+    @Json(name = "nome")
+    private String nome;
+    @Json(name = "email")
+    private String email;
+    @Json(name = "senha")
+    private String senha;
 
-        public long getId() {
-            return id;
-        }
+    public UserModel() {
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public UserModel(String nome, String email, String senha) {
+        super();
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
 
-        public Example withId(long id) {
-            this.id = id;
-            return this;
-        }
+    public Integer getId() {
+        return id;
+    }
 
-        public String getNome() {
-            return nome;
-        }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        public void setNome(String nome) {
-            this.nome = nome;
-        }
+    public UserModel withId(Integer id) {
+        this.id = id;
+        return this;
+    }
 
-        public Example withNome(String nome) {
-            this.nome = nome;
-            return this;
-        }
+    public String getNome() {
+        return nome;
+    }
 
-        public String getEmail() {
-            return email;
-        }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-        public void setEmail(String email) {
-            this.email = email;
-        }
+    public UserModel withNome(String nome) {
+        this.nome = nome;
+        return this;
+    }
 
-        public Example withEmail(String email) {
-            this.email = email;
-            return this;
-        }
+    public String getEmail() {
+        return email;
+    }
 
-        public String getSenha() {
-            return senha;
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        public void setSenha(String senha) {
-            this.senha = senha;
-        }
+    public UserModel withEmail(String email) {
+        this.email = email;
+        return this;
+    }
 
-        public Example withSenha(String senha) {
-            this.senha = senha;
-            return this;
-        }
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public UserModel withSenha(String senha) {
+        this.senha = senha;
+        return this;
     }
 }
