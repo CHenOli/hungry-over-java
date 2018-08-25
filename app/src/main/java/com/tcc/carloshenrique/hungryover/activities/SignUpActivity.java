@@ -45,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungry-over-api.herokuapp.com/clientes/")
+                .baseUrl("https://hungryover-api.herokuapp.com/clientes/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
@@ -88,8 +88,9 @@ public class SignUpActivity extends AppCompatActivity {
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String image = "";
 
-        UserModel user = new UserModel(name, email, password);
+        UserModel user = new UserModel(name, email, password, image);
 
         final Call<UserModel> userCall = userService.create(user);
         userCall.enqueue(new Callback<UserModel>() {

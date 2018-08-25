@@ -7,20 +7,24 @@ public class UserModel {
     @Json(name = "id")
     private Integer id;
     @Json(name = "nome")
-    private String nome;
+    private String name;
     @Json(name = "email")
     private String email;
     @Json(name = "senha")
-    private String senha;
+    private String password;
+    @Json(name = "url")
+    private String image;
 
     public UserModel() {
+
     }
 
-    public UserModel(String nome, String email, String senha) {
+    public UserModel(String name, String email, String password, String image) {
         super();
-        this.nome = nome;
+        this.name = name;
         this.email = email;
-        this.senha = senha;
+        this.password = password;
+        this.image = image;
     }
 
     public Integer getId() {
@@ -36,16 +40,16 @@ public class UserModel {
         return this;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public UserModel withNome(String nome) {
-        this.nome = nome;
+    public UserModel withName(String name) {
+        this.name = name;
         return this;
     }
 
@@ -62,16 +66,29 @@ public class UserModel {
         return this;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public UserModel withSenha(String senha) {
-        this.senha = senha;
+    public UserModel withPassword(String password) {
+        this.password = password;
+        return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String password) {
+        this.image = image;
+    }
+
+    public UserModel withImage (String image) {
+        this.image = image;
         return this;
     }
 }

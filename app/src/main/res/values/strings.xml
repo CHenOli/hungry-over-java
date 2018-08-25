@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HungryOver</string>
 
-    <!-- Strings related to login -->
+    <!-- activity_login strings -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
     <string name="action_sign_in">Entre ou Registre-se</string>
@@ -19,22 +19,31 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <!-- activity_login strings -->
     <string name="email">Email</string>
-    <string name="senha">Senha</string>
-    <string name="btn_entrar">ENTRAR</string>
-    <string name="sem_conta">Não tem uma conta? Crie já!</string>
-    <string name="esqueceu_senha">Esqueci minha senha</string>
+    <string name="password">Senha</string>
+    <string name="action_login">ENTRAR</string>
+    <string name="account_no">Não tem uma conta? Crie já!</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="phone_number">Telefone</string>
 
     <!-- activity_signup strings -->
-    <string name="nome">Nome</string>
-    <string name="registrar">REGISTRAR</string>
-    <string name="confirmar_senha">Confirme a senha</string>
-    <string name="tem_conta">Já tem uma conta? Entre já</string>
+    <string name="name">Nome</string>
+    <string name="register">REGISTRAR</string>
+    <string name="password_confirm">Confirme a senha</string>
+    <string name="account_yes">Já tem uma conta? Entre já</string>
 
     <!-- activity_code_read -->
-    <string name="leitura">Escaneie o código da mesa ou, se preferir,</string>
-    <string name="prosseguir">PROSSIGA</string>
+    <string name="read">Escaneie o código da mesa ou, se preferir,</string>
+    <string name="read_proceed">PROSSIGA</string>
+    <string name="title_activity_my_account">MyAccountActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="skip">Pular</string>
 
+    <!-- permissions -->
+    <string name="permission_camera_refused">A permissão da câmera é necessária para ler o código da mesa.</string>
+
+    <!-- navigation -->
+    <string name="nav_title_personal_info">Dados Pessoais</string>
 </resources>

@@ -5,7 +5,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class RetrofitInstance {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://hungry-over-api.herokuapp.com/clientes";
+    private static final String BASE_URL = "https://hungryover-api.herokuapp.com/clientes";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

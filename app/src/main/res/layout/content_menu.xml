@@ -11,119 +11,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvwCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/my_border_images"
-                    android:paddingBottom="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/pizza_category_small" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:layout_gravity="bottom"
-                    android:background="#70FFFFFF"
-                    android:foreground="@drawable/ripple"
-                    android:text="Pizzas"
-                    android:fontFamily="@font/roboto_thin"
-                    android:textSize="45sp"
-                    android:textColor="@android:color/white"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/my_border_images"
-                    android:paddingBottom="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/burguer_category_small" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:layout_gravity="bottom"
-                    android:background="#70FFFFFF"
-                    android:foreground="@drawable/ripple"
-                    android:text="Lanches"
-                    android:fontFamily="@font/roboto_thin"
-                    android:textSize="40sp"
-                    android:textColor="@android:color/white"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/my_border_images"
-                    android:paddingBottom="10dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/meal_category_small" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:layout_gravity="bottom"
-                    android:background="#70FFFFFF"
-                    android:foreground="@drawable/ripple"
-                    android:text="Pratos"
-                    android:fontFamily="@font/roboto_thin"
-                    android:textSize="40sp"
-                    android:textColor="@android:color/white"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:background="@drawable/my_border_images"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/juice_category_small" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="#70FFFFFF"
-                    android:fontFamily="@font/roboto_thin"
-                    android:foreground="@drawable/ripple"
-                    android:text="Sucos"
-                    android:textColor="@android:color/white"
-                    android:textSize="40sp" />
-            </FrameLayout>
-        </LinearLayout>
+            tools:listitem="@layout/holder_categories"/>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:inputType="textCapWords"
-                    android:hint="@string/nome" />
+                    android:hint="@string/name" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Email Label -->
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:textColor="@android:color/white"
-                    android:hint="@string/senha" />
+                    android:hint="@string/password" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Password Label -->
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:inputType="textPassword"
-                    android:hint="@string/confirmar_senha" />
+                    android:hint="@string/password_confirm" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Signup Button -->
@@ -88,7 +88,7 @@
                 android:textColor="@android:color/white"
                 android:background="@drawable/my_border"
                 android:foreground="@drawable/ripple"
-                android:text="@string/registrar"/>
+                android:text="@string/register"/>
 
             <TextView android:id="@+id/link_login"
                 android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                 android:foreground="@drawable/ripple"
                 android:padding="8dp"
                 android:textColor="@android:color/white"
-                android:text="@string/tem_conta"
+                android:text="@string/account_yes"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>

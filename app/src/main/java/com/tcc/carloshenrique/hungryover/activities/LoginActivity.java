@@ -1,29 +1,25 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
-import java.util.List;
-
 import butterknife.ButterKnife;
 import butterknife.BindView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,10 +30,14 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.btn_login) Button _loginButton;
-    @BindView(R.id.link_signup) TextView _signupLink;
+    @BindView(R.id.input_email)
+    EditText _emailText;
+    @BindView(R.id.input_password)
+    EditText _passwordText;
+    @BindView(R.id.btn_login)
+    Button _loginButton;
+    @BindView(R.id.link_signup)
+    TextView _signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,11 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungry-over-api.herokuapp.com/")
+                .baseUrl("https://hungryover-api.herokuapp.com/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         final UserService clienteService = retrofit.create(UserService.class);
+
+        _emailText.setText("italoox96@gmail.com");
+        _passwordText.setText("12345678");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -93,56 +96,58 @@ public class LoginActivity extends AppCompatActivity {
 
         final MaterialSimpleDialog dialog = new MaterialSimpleDialog(LoginActivity.this);
         dialog.setTitle("Autenticando")
-              //Use this if you want to set a text message
-              .setMessage("Só mais um momentinho...")
+                //Use this if you want to set a text message
+                .setMessage("Só mais um momentinho...")
 
-              //Use this for a custom layout resource
-              //.setCustomViewResource(R.layout.dialog_layout_base)
+                //Use this for a custom layout resource
+                //.setCustomViewResource(R.layout.dialog_layout_base)
 
-              //Or pass the View
-              //.setCustomView(yourView);
+                //Or pass the View
+                //.setCustomView(yourView);
 
-              //Set cancelable on touch outside (default true)
-              .dismissOnTouchOutside(false);
+                //Set cancelable on touch outside (default true)
+                .dismissOnTouchOutside(false);
         dialog.show();
 
-        Call<List<UserModel>> call = clienteService.all();
-        call.enqueue(new Callback<List<UserModel>>() {
+        UserModel user = new UserModel();
+
+        user.setEmail(_emailText.getText().toString());
+        user.setPassword(_passwordText.getText().toString());
+
+        Call<UserModel> call = clienteService.login(user);
+        call.enqueue(new Callback<UserModel>() {
             @Override
-            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                List<UserModel> user = response.body();
-
-                for(int i = 0; i < user.size(); i++) {
-                    //Log.w("RETROFIT", user.get(i).getNome() + " " + i);
-                    if (_emailText.getText().toString().equalsIgnoreCase(user.get(i).getEmail())
-                            && (_passwordText.getText().toString().equals(user.get(i).getSenha()))) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                onLoginSuccess();
-                                dialog.dismiss();
-                            }
-                        }, 3000);
-                    }
+                if(response.body().getEmail() != null)
+                {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onLoginSuccess();
+                            dialog.dismiss();
+                        }
+                    }, 1000);
+                    _loginButton.setEnabled(true);
                 }
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        onLoginFailed();
-                        dialog.dismiss();
-                        return;
-                    }
-                 }, 3000);
+                else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            onLoginFailed();
+                            dialog.dismiss();
+                            return;
+                        }
+                    }, 3000);
+                }
             }
+
             @Override
-            public void onFailure(Call<List<UserModel>> call, Throwable t) {
+            public void onFailure(Call<UserModel> call, Throwable t) {
                 call.cancel();
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {

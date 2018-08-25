@@ -14,16 +14,22 @@ import retrofit2.http.Query;
 public interface UserService {
     @GET("/clientes")
     Call<List<UserModel>> all();
+    @GET("/clientes")
+    Call<UserModel> getClient();
 
     @GET("/clientes/id")
-    Call<UserModel> getID(@Query("id") int id);
+    Call<UserModel> getId(@Query("id") int id);
     @GET("/clientes/nome")
-    Call<UserModel> getName(@Query("nome") String name);
+    Call<UserModel> getName(@Query("name") String name);
     @GET("/clientes/email")
     Call<UserModel> getEmail(@Query("email") String email);
     @GET("/clientes/senha")
-    Call<UserModel> getPassword(@Query("senha") String password);
+    Call<UserModel> getPassword(@Query("password") String password);
+    @GET("/clientes/imagem")
+    Call<UserModel> getImage(@Query("image") String image);
 
     @POST("/clientes")
     Call<UserModel> create(@Body UserModel user);
+    @POST("/clientes/login")
+    Call<UserModel> login(@Body UserModel user);
 }
