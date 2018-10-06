@@ -1,5 +1,6 @@
 package com.tcc.carloshenrique.hungryover.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -13,19 +14,23 @@ import java.util.List;
 
 public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
     private final List<ItemModel> ApiItems;
+    private Context context;
 
-    public ItemAdapter(ArrayList items) {
+    public ItemAdapter(List<ItemModel> items) {
         ApiItems = items;
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         return new ItemHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.holder_items, parent, false), 1);
+                .inflate(R.layout.holder_items_card, parent, false), 1);
     }
 
     @Override
     public void onBindViewHolder(final ItemHolder holder, int position) {
+        holder.txtItemName.setText(ApiItems.get(position).getNome());
+        holder.txtItemPrice.setText("R$ " + ApiItems.get(position).getValor().toString());
 
         //Adicionar no onClick para abrir a activity correspondete ao item clicado
         //holder.imgCategory.setOnClickListener(view -> ));
@@ -37,26 +42,14 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         return ApiItems != null ? ApiItems.size() : 0;
     }
 
-    public void updateList(ItemModel items) {
+    public void updateList(List<ItemModel> items) {
         insertItem(items);
     }
 
     // Método responsável por inserir um novo usuário na lista e notificar que há novos itens.
-    private void insertItem(ItemModel items) {
-        ApiItems.add(items);
+    private void insertItem(List<ItemModel> categories) {
+        ApiItems.addAll(categories);
+
         notifyItemInserted(getItemCount());
-    }
-
-    // Método responsável por atualizar um usuário já existente na lista.
-    private void updateItem(int position) {
-        ItemModel itemModel = ApiItems.get(position);
-        notifyItemChanged(position);
-    }
-
-    // Método responsável por remover um usuário da lista.
-    private void removerItem(int position) {
-        ApiItems.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, ApiItems.size());
     }
 }

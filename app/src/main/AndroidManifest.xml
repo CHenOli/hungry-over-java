@@ -45,7 +45,6 @@
         <activity
             android:name=".activities.MyAccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
     </application>
-
 </manifest>

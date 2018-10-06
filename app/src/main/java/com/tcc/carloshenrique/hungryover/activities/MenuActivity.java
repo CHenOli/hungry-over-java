@@ -16,12 +16,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.tcc.carloshenrique.hungryover.R;
-import com.tcc.carloshenrique.hungryover.adapters.GroupAdapter;
+import com.tcc.carloshenrique.hungryover.adapters.CategoryAdapter;
+import com.tcc.carloshenrique.hungryover.adapters.ItemAdapter;
+import com.tcc.carloshenrique.hungryover.listeners.RecyclerTouchListener;
 import com.tcc.carloshenrique.hungryover.models.CategoryModel;
+import com.tcc.carloshenrique.hungryover.models.ItemModel;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
 import com.tcc.carloshenrique.hungryover.network.CategoryService;
+import com.tcc.carloshenrique.hungryover.network.ItemService;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import java.util.ArrayList;
@@ -44,9 +50,12 @@ public class MenuActivity extends AppCompatActivity
 
     private UserModel user;
     private List<CategoryModel> categories;
+    private List<ItemModel> items;
 
-    //private GroupAdapter rvwAdapter;
     @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
+    @BindView(R.id.rvwItems) RecyclerView rvwItems;
+    @BindView(R.id.scrollItems) ScrollView scrollItems;
+    @BindView(R.id.scrollCategories) ScrollView scrollCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +96,38 @@ public class MenuActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         categories = new ArrayList<>();
+        items = new ArrayList<>();
 
+        getCategoryData();
 
-        getCategoryData(1);
+        rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                scrollCategories.setVisibility(View.GONE);
+                scrollItems.setVisibility(View.VISIBLE);
+
+                int id = categories.get(position).getId();
+                getItemData(id);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+        rvwItems.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     public UserModel getUserData(int idUser) {
@@ -117,7 +155,7 @@ public class MenuActivity extends AppCompatActivity
         return user;
     }
 
-    public void getCategoryData(int idCategory) {
+    public void getCategoryData() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://hungryover-api.herokuapp.com")
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -131,18 +169,39 @@ public class MenuActivity extends AppCompatActivity
             public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
                 int statusCode = response.code();
                 categories.addAll(response.body());
-                setupGroupRecycler(categories) ;
+                setupCategoryRecycler(categories);
             }
             @Override
             public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
                 call.cancel();
             }
         });
-
-
     }
 
-    private void setupGroupRecycler(List<CategoryModel> categories) {
+    public void getItemData(int idCategory) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://hungryover-api.herokuapp.com")
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final ItemService itemService = retrofit.create(ItemService.class);
+
+        Call<List<ItemModel>> call = itemService.all(idCategory);
+        call.enqueue(new Callback<List<ItemModel>>() {
+            @Override
+            public void onResponse(Call<List<ItemModel>> call, Response<List<ItemModel>> response) {
+                int statusCode = response.code();
+                items.addAll(response.body());
+                setupItemRecycler(items);
+            }
+            @Override
+            public void onFailure(Call<List<ItemModel>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void setupCategoryRecycler(List<CategoryModel> categories) {
 
         // Configurando o gerenciador de layout para ser uma lista.
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -153,12 +212,31 @@ public class MenuActivity extends AppCompatActivity
 
         //List<CategoryModel> listCategories = getCategoryData(1);
 
-        rvwCategory.setAdapter(new GroupAdapter(categories));
+        rvwCategory.setAdapter(new CategoryAdapter(categories));
 
-        //rvwAdapter = new GroupAdapter(listCategories);
+        //rvwAdapter = new CategoryAdapter(listCategories);
 
         //if(categories != null)
           //  rvwAdapter.updateList(listCategories);
+    }
+
+    private void setupItemRecycler(List<ItemModel> items) {
+
+        // Configurando o gerenciador de layout para ser uma lista.
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvwItems.setLayoutManager(layoutManager);
+
+        // Adiciona o adapter que irá anexar os objetos à lista.
+        // Está sendo criado com lista vazia, pois será preenchida posteriormente.
+
+        //List<CategoryModel> listCategories = getCategoryData(1);
+
+        rvwItems.setAdapter(new ItemAdapter(items));
+
+        //rvwAdapter = new CategoryAdapter(listCategories);
+
+        //if(categories != null)
+        //  rvwAdapter.updateList(listCategories);
     }
 
     @Override

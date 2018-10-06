@@ -34,7 +34,6 @@
                 android:fontFamily="@font/roboto_thin"
                 android:foreground="@drawable/ripple"
                 android:layout_marginBottom="10dp"
-                android:paddingBottom="10dp"
                 android:text="Pizzas"
                 android:textColor="@android:color/white"
                 android:textSize="45sp" />
