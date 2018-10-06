@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="5dp"
+    android:paddingEnd="5dp"
+    android:paddingTop="5dp"
+    android:layout_width="match_parent"
+    android:paddingBottom="5dp"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/my_border_relative">
+
+        <TextView
+            android:id="@+id/txtNameItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toStartOf="@+id/imgSeparator"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="30dp"
+            tools:text="Calabresa" />
+
+        <ImageView
+            android:id="@+id/imgSeparator"
+            android:layout_width="48dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@id/txtPrice"
+            android:scaleType="fitXY"
+            android:src="@drawable/test2" />
+
+        <TextView
+            android:id="@+id/txtPriceItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="0dp"
+            android:contentDescription="Price"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="16dp"
+            android:text="R$: 19,90"
+            android:textSize="18dp" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

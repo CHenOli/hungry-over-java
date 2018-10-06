@@ -46,4 +46,5 @@
 
     <!-- navigation -->
     <string name="nav_title_personal_info">Dados Pessoais</string>
+    <string name="title_activity_order">OrderActivity</string>
 </resources>

@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.tcc.carloshenrique.hungryover.R;
@@ -48,14 +49,18 @@ public class MenuActivity extends AppCompatActivity
     //@BindView(R.id.txt_name) TextView _txtName;
     //@BindView(R.id.txt_email) TextView _txtEmail;
 
-    private UserModel user;
-    private List<CategoryModel> categories;
-    private List<ItemModel> items;
+    private ItemAdapter itemAdapter;
+
+    private UserModel User;
+    private List<CategoryModel> Categories;
+    private List<ItemModel> Items;
+    private List<ItemModel> OrderItems;
 
     @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
     @BindView(R.id.rvwItems) RecyclerView rvwItems;
     @BindView(R.id.scrollItems) ScrollView scrollItems;
     @BindView(R.id.scrollCategories) ScrollView scrollCategories;
+    @BindView(R.id.mainToolbar) Toolbar mainToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,8 @@ public class MenuActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mainToolbar = findViewById(R.id.mainToolbar);
+        setSupportActionBar(mainToolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +88,7 @@ public class MenuActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -95,8 +100,9 @@ public class MenuActivity extends AppCompatActivity
         Snackbar.make(fab, intent.getStringExtra("idMesa"), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
-        categories = new ArrayList<>();
-        items = new ArrayList<>();
+        OrderItems = new ArrayList<>();
+        Categories = new ArrayList<>();
+        Items = new ArrayList<>();
 
         getCategoryData();
 
@@ -107,7 +113,7 @@ public class MenuActivity extends AppCompatActivity
                 scrollCategories.setVisibility(View.GONE);
                 scrollItems.setVisibility(View.VISIBLE);
 
-                int id = categories.get(position).getId();
+                int id = Categories.get(position).getId();
                 getItemData(id);
             }
 
@@ -143,16 +149,16 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                user = response.body();
+                User = response.body();
             }
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
                 call.cancel();
-                user = null;
+                User = null;
             }
         });
 
-        return user;
+        return User;
     }
 
     public void getCategoryData() {
@@ -168,8 +174,8 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
                 int statusCode = response.code();
-                categories.addAll(response.body());
-                setupCategoryRecycler(categories);
+                Categories.addAll(response.body());
+                setupCategoryRecycler(Categories);
             }
             @Override
             public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
@@ -191,8 +197,8 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<List<ItemModel>> call, Response<List<ItemModel>> response) {
                 int statusCode = response.code();
-                items.addAll(response.body());
-                setupItemRecycler(items);
+                Items.addAll(response.body());
+                setupItemRecycler(Items);
             }
             @Override
             public void onFailure(Call<List<ItemModel>> call, Throwable t) {
@@ -229,9 +235,10 @@ public class MenuActivity extends AppCompatActivity
         // Adiciona o adapter que irá anexar os objetos à lista.
         // Está sendo criado com lista vazia, pois será preenchida posteriormente.
 
-        //List<CategoryModel> listCategories = getCategoryData(1);
+        //List<CategoryModel> listCategories = getCategoryData(1)
+        itemAdapter = new ItemAdapter((items));
 
-        rvwItems.setAdapter(new ItemAdapter(items));
+        rvwItems.setAdapter(itemAdapter);
 
         //rvwAdapter = new CategoryAdapter(listCategories);
 
@@ -263,10 +270,22 @@ public class MenuActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.config) {
-            //return true;
-        //}
+        if (id == R.id.menu_my_cart) {
+            if(itemAdapter == null) {
+                Snackbar.make(mainToolbar, R.string.account_no, Snackbar.LENGTH_LONG);
+            }
+            else {
+                OrderItems.addAll(itemAdapter.getCartItems());
+
+                if(OrderItems.size() > 1) {
+                    Intent intent = new Intent(this, OrderActivity.class);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(mainToolbar, R.string.account_no, Snackbar.LENGTH_LONG);
+                }
+            }
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

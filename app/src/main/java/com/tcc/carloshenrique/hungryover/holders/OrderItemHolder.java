@@ -11,16 +11,13 @@ import com.tcc.carloshenrique.hungryover.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ItemHolder extends RecyclerView.ViewHolder {
+public class OrderItemHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.txtNameItem) public TextView txtItemName;
     @BindView(R.id.txtPriceItem) public TextView txtItemPrice;
-    @BindView(R.id.imgItem) public ImageView imgItem;
-    @BindView(R.id.btn_ItemAdd) public Button btnItemAdd;
-    @BindView(R.id.btn_ItemInfo) public Button btnItemInfo;
 
     public int ItemId;
 
-    public ItemHolder(View itemView, int id) {
+    public OrderItemHolder(View itemView, int id) {
         super(itemView);
         ItemId = id;
 
