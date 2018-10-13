@@ -3,23 +3,21 @@ package com.tcc.carloshenrique.hungryover.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.tcc.carloshenrique.hungryover.R;
-import com.tcc.carloshenrique.hungryover.activities.OrderActivity;
 import com.tcc.carloshenrique.hungryover.holders.ItemHolder;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
+public class CartItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
     private List<ItemModel> OrderItems;
     private Context Context;
     private int Position;
 
-    public OrderItemAdapter(List<ItemModel> items) {
+    public CartItemAdapter(List<ItemModel> items) {
         OrderItems = new ArrayList<>();
     }
 

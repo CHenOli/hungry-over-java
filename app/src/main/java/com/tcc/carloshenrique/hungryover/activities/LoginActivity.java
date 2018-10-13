@@ -54,14 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungryover-api.herokuapp.com/")
+                .baseUrl(getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         final UserService clienteService = retrofit.create(UserService.class);
 
-        _emailText.setText("italoox96@gmail.com");
-        _passwordText.setText("12345678");
+        _emailText.setText("eduardo@teste.com");
+        _passwordText.setText("123456");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 

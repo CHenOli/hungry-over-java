@@ -47,4 +47,10 @@
     <!-- navigation -->
     <string name="nav_title_personal_info">Dados Pessoais</string>
     <string name="title_activity_order">OrderActivity</string>
+
+    <!-- Cart -->
+    <string name="item_amount">"Informe a quantidade:"</string>
+
+    <!-- URL -->
+    <string name="url">http://52.90.180.18:8080/</string>
 </resources>

@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.OrderActivity">
+    tools:context=".activities.CartActivity">
 
-    <include layout="@layout/content_order" />
+    <include layout="@layout/content_cart" />
 
 </android.support.design.widget.CoordinatorLayout>

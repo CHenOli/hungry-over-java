@@ -1,6 +1,5 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,8 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tcc.carloshenrique.hungryover.R;
-import com.tcc.carloshenrique.hungryover.adapters.ItemAdapter;
-import com.tcc.carloshenrique.hungryover.adapters.OrderItemAdapter;
+import com.tcc.carloshenrique.hungryover.adapters.CartItemAdapter;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
 
 import java.util.ArrayList;
@@ -23,10 +21,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity {
 
     private List<ItemModel> items = new ArrayList<>();
-    private OrderItemAdapter orderItemAdapter;
+    private CartItemAdapter cartItemAdapter;
 
     @BindView(R.id.rvwOrderItems) RecyclerView rvwOrderItems;
     @BindView(R.id.mainToolbar) Toolbar mainToolbar;
@@ -39,7 +37,7 @@ public class OrderActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_cart);
 
         ButterKnife.bind(this);
 
@@ -65,9 +63,9 @@ public class OrderActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwOrderItems.setLayoutManager(layoutManager);
 
-        orderItemAdapter = new OrderItemAdapter(items);
+        cartItemAdapter = new CartItemAdapter(items);
 
-        rvwOrderItems.setAdapter(orderItemAdapter);
+        rvwOrderItems.setAdapter(cartItemAdapter);
     }
 
     @Override

@@ -2,10 +2,13 @@
 <resources>
     <color name="colorPrimary">#00acc1</color>
     <color name="colorPrimaryDark">#00838f</color>
-    <color name="colorAccent">#00acc1</color>
+    <color name="colorAccent">#64dd17</color>
 
     <!-- Cores do Material Dialog -->
     <color name="text_title">#CC000000</color>
     <color name="text_secondary">#8C000000</color>
     <color name="light_blue">#03a9f4</color>
+
+    <!-- Payment -->
+    <color name="payment">#64dd17</color>
 </resources>

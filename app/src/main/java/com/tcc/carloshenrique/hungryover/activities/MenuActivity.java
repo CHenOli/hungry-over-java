@@ -1,12 +1,12 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,18 +17,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
-import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.adapters.CategoryAdapter;
 import com.tcc.carloshenrique.hungryover.adapters.ItemAdapter;
 import com.tcc.carloshenrique.hungryover.listeners.RecyclerTouchListener;
 import com.tcc.carloshenrique.hungryover.models.CategoryModel;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
+import com.tcc.carloshenrique.hungryover.models.RestaurantModel;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
 import com.tcc.carloshenrique.hungryover.network.CategoryService;
 import com.tcc.carloshenrique.hungryover.network.ItemService;
+import com.tcc.carloshenrique.hungryover.network.RestaurantService;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import java.util.ArrayList;
@@ -55,6 +55,9 @@ public class MenuActivity extends AppCompatActivity
     private List<CategoryModel> Categories;
     private List<ItemModel> Items;
     private List<ItemModel> OrderItems;
+
+    private int idRestaurant = 0;
+    private int idTable = 0;
 
     @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
     @BindView(R.id.rvwItems) RecyclerView rvwItems;
@@ -95,16 +98,22 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Intent intent = getIntent();
-
-        Snackbar.make(fab, intent.getStringExtra("idMesa"), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-
         OrderItems = new ArrayList<>();
         Categories = new ArrayList<>();
         Items = new ArrayList<>();
 
-        getCategoryData();
+        Intent intent = getIntent();
+        try{
+            idTable = Integer.parseInt(intent.getStringExtra("idMesa"));
+        }
+        catch (Exception e)
+        {
+            Snackbar.make(mainToolbar, "Falha no login.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
+        getRestaurant(idTable);
+        getCategoryData(idRestaurant);
 
         rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -136,9 +145,32 @@ public class MenuActivity extends AppCompatActivity
         }));
     }
 
+    private void getRestaurant(int idMesa) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.url))
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final RestaurantService restaurantService = retrofit.create(RestaurantService.class);
+
+        Call<RestaurantModel> call = restaurantService.getId(idMesa);
+        call.enqueue((new Callback<RestaurantModel>() {
+            @Override
+            public void onResponse(Call<RestaurantModel> call, Response<RestaurantModel> response) {
+                if(response.body() != null)
+                    idRestaurant = response.body().getId();
+            }
+
+            @Override
+            public void onFailure(Call<RestaurantModel> call, Throwable t) {
+
+            }
+        }));
+    }
+
     public UserModel getUserData(int idUser) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungry-over-api.herokuapp.com/")
+                .baseUrl(getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
@@ -161,21 +193,24 @@ public class MenuActivity extends AppCompatActivity
         return User;
     }
 
-    public void getCategoryData() {
+    public void getCategoryData(int idRestaurant) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungryover-api.herokuapp.com")
+                .baseUrl(getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         final CategoryService categoryService = retrofit.create(CategoryService.class);
 
-        Call<List<CategoryModel>> call = categoryService.all();
+        Call<List<CategoryModel>> call = categoryService.getCategories(idRestaurant);
         call.enqueue(new Callback<List<CategoryModel>>() {
             @Override
             public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
                 int statusCode = response.code();
-                Categories.addAll(response.body());
-                setupCategoryRecycler(Categories);
+                if(response.body() != null)
+                {
+                    Categories.addAll(response.body());
+                    setupCategoryRecycler(Categories);
+                }
             }
             @Override
             public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
@@ -186,7 +221,7 @@ public class MenuActivity extends AppCompatActivity
 
     public void getItemData(int idCategory) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hungryover-api.herokuapp.com")
+                .baseUrl(getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
@@ -208,7 +243,6 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void setupCategoryRecycler(List<CategoryModel> categories) {
-
         // Configurando o gerenciador de layout para ser uma lista.
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwCategory.setLayoutManager(layoutManager);
@@ -227,23 +261,12 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void setupItemRecycler(List<ItemModel> items) {
-
-        // Configurando o gerenciador de layout para ser uma lista.
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwItems.setLayoutManager(layoutManager);
 
-        // Adiciona o adapter que irá anexar os objetos à lista.
-        // Está sendo criado com lista vazia, pois será preenchida posteriormente.
-
-        //List<CategoryModel> listCategories = getCategoryData(1)
         itemAdapter = new ItemAdapter((items));
 
         rvwItems.setAdapter(itemAdapter);
-
-        //rvwAdapter = new CategoryAdapter(listCategories);
-
-        //if(categories != null)
-        //  rvwAdapter.updateList(listCategories);
     }
 
     @Override
@@ -265,9 +288,6 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.menu_my_cart) {
@@ -278,7 +298,7 @@ public class MenuActivity extends AppCompatActivity
                 OrderItems.addAll(itemAdapter.getCartItems());
 
                 if(OrderItems.size() > 1) {
-                    Intent intent = new Intent(this, OrderActivity.class);
+                    Intent intent = new Intent(this, CartActivity.class);
                     startActivity(intent);
                 } else {
                     Snackbar.make(mainToolbar, R.string.account_no, Snackbar.LENGTH_LONG);

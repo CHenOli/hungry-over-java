@@ -1,11 +1,15 @@
 package com.tcc.carloshenrique.hungryover.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.holders.ItemHolder;
@@ -35,7 +39,7 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ItemHolder holder, int position) {
+    public void onBindViewHolder(final ItemHolder holder, final int position) {
         Position = position;
 
         holder.txtItemName.setText(ApiItems.get(position).getNome());

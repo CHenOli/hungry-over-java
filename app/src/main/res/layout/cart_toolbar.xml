@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OrderActivity">
+    tools:context=".activities.CartActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -23,12 +23,12 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_payment"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_dinner_white" />
+        android:backgroundTint="@color/payment"
+        app:srcCompat="@drawable/ic_payment_white" />
 
 </android.support.design.widget.CoordinatorLayout>
