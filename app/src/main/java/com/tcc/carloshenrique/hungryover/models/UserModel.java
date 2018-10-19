@@ -1,6 +1,16 @@
 package com.tcc.carloshenrique.hungryover.models;
 
+import android.content.res.Resources;
+
 import com.squareup.moshi.Json;
+import com.tcc.carloshenrique.hungryover.R;
+import com.tcc.carloshenrique.hungryover.network.UserService;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class UserModel {
 
@@ -14,6 +24,8 @@ public class UserModel {
     private String password;
     @Json(name = "url")
     private String image;
+
+    private UserModel user;
 
     public UserModel() {
 
@@ -90,5 +102,31 @@ public class UserModel {
     public UserModel withImage (String image) {
         this.image = image;
         return this;
+    }
+
+    public UserModel getUserInformation(int userId)
+    {
+        /*Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Resources.getSystem().getString(R.string.url))
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final UserService clientService = retrofit.create(UserService.class);
+
+        Call<UserModel> call = clientService.getInfo(userId);
+        call.enqueue(new Callback<UserModel>() {
+
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                user = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+
+            }
+        });
+        */
+        return user;
     }
 }

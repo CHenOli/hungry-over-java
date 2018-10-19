@@ -30,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+    private UserModel user;
+
     @BindView(R.id.input_email)
     EditText _emailText;
     @BindView(R.id.input_password)
@@ -109,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                 .dismissOnTouchOutside(false);
         dialog.show();
 
-        UserModel user = new UserModel();
+        user = new UserModel();
 
         user.setEmail(_emailText.getText().toString());
         user.setPassword(_passwordText.getText().toString());
@@ -119,7 +121,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                if(response.body().getEmail() != null)
+                user = response.body();
+                if(statusCode == 200)
                 {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -168,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Intent menuIntent = new Intent(LoginActivity.this, CodeReaderActivity.class);
-        menuIntent.putExtra("email", _emailText.getText().toString());
+        menuIntent.putExtra("idUser", user.getId());
         startActivity(menuIntent);
         finish();
     }

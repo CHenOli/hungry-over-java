@@ -1,6 +1,5 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -58,6 +57,8 @@ public class MenuActivity extends AppCompatActivity
 
     private int idRestaurant = 0;
     private int idTable = 0;
+    private int idUser = 0;
+    private int idSession = 0;
 
     @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
     @BindView(R.id.rvwItems) RecyclerView rvwItems;
@@ -103,17 +104,16 @@ public class MenuActivity extends AppCompatActivity
         Items = new ArrayList<>();
 
         Intent intent = getIntent();
-        try{
-            idTable = Integer.parseInt(intent.getStringExtra("idMesa"));
-        }
-        catch (Exception e)
-        {
-            Snackbar.make(mainToolbar, "Falha no login.", Snackbar.LENGTH_LONG)
+        try {
+            idTable = intent.getIntExtra("idTable", 0);
+            idUser = intent.getIntExtra("idUser", 0);
+            idSession = intent.getIntExtra("idSession", 0);
+        } catch (Exception e) {
+            Snackbar.make(mainToolbar, "Falha na obtenção dos dados.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
 
-        getRestaurant(idTable);
-        getCategoryData(idRestaurant);
+        Configure();
 
         rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -143,6 +143,12 @@ public class MenuActivity extends AppCompatActivity
 
             }
         }));
+    }
+
+    private void Configure() {
+        getUserData(idUser);
+        getRestaurant(idTable);
+        getCategoryData(idRestaurant);
     }
 
     private void getRestaurant(int idMesa) {
@@ -181,7 +187,8 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                User = response.body();
+                if(statusCode == 200)
+                    User = response.body();
             }
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
@@ -227,7 +234,7 @@ public class MenuActivity extends AppCompatActivity
 
         final ItemService itemService = retrofit.create(ItemService.class);
 
-        Call<List<ItemModel>> call = itemService.all(idCategory);
+        Call<List<ItemModel>> call = itemService.getAll(idCategory);
         call.enqueue(new Callback<List<ItemModel>>() {
             @Override
             public void onResponse(Call<List<ItemModel>> call, Response<List<ItemModel>> response) {
@@ -292,7 +299,8 @@ public class MenuActivity extends AppCompatActivity
 
         if (id == R.id.menu_my_cart) {
             if(itemAdapter == null) {
-                Snackbar.make(mainToolbar, R.string.account_no, Snackbar.LENGTH_LONG);
+                Snackbar.make(mainToolbar, "O carrinho está vazio", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
             else {
                 OrderItems.addAll(itemAdapter.getCartItems());
@@ -301,7 +309,8 @@ public class MenuActivity extends AppCompatActivity
                     Intent intent = new Intent(this, CartActivity.class);
                     startActivity(intent);
                 } else {
-                    Snackbar.make(mainToolbar, R.string.account_no, Snackbar.LENGTH_LONG);
+                    Snackbar.make(mainToolbar, "O carrinho está vazio", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
             return true;
@@ -312,11 +321,11 @@ public class MenuActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_pagamento) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_cardapio) {
 
         } else if (id == R.id.nav_pedidos) {

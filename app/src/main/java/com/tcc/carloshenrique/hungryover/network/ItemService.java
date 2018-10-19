@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface ItemService {
     @GET("/getprodutos/{idCategory}")
-    Call<List<ItemModel>> all(@Path(value = "idCategory", encoded = true) int idCategory);
+    Call<List<ItemModel>> getAll(@Path(value = "idCategory", encoded = true) int idCategory);
 
     @GET("/getprodutos/{category_id}/id")
     Call<ItemModel> getId(@Path(value = "category_id", encoded = true) int id);

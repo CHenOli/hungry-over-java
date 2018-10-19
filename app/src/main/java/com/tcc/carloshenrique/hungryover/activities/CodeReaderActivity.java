@@ -22,17 +22,28 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.components.Session;
+import com.tcc.carloshenrique.hungryover.models.UserModel;
+import com.tcc.carloshenrique.hungryover.network.SessionService;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CodeReaderActivity extends AppCompatActivity {
 
-    @BindView(R.id.dbvBarcode) DecoratedBarcodeView _qrScanner;
-    @BindView(R.id.fabProceed) FloatingActionButton _proceed;
+    @BindView(R.id.dbvBarcode)
+    DecoratedBarcodeView _qrScanner;
+    @BindView(R.id.fabProceed)
+    FloatingActionButton _btnProceed;
 
+    private UserModel user;
+    private Session session = new Session();
     private boolean permission = false;
     final int PERMISSIONS_REQUEST_CAMERA = 0;
 
@@ -47,7 +58,13 @@ public class CodeReaderActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         permission = checkPermissions();
 
-        _proceed.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        user.setId(intent.getIntExtra("idUser", 0));
+        session.setIdUser(user.getId());
+
+        Configure();
+
+        _btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent menuIntent = new Intent(CodeReaderActivity.this, MenuActivity.class);
@@ -56,9 +73,14 @@ public class CodeReaderActivity extends AppCompatActivity {
             }
         });
 
-        if(permission) {
-            scannQR();
+        if (permission) {
+            scanQR();
         }
+    }
+
+    public void Configure()
+    {
+        InitializeSession();
     }
 
     public boolean checkPermissions() {
@@ -77,7 +99,7 @@ public class CodeReaderActivity extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     permission = true;
-                    scannQR();
+                    scanQR();
                 } else {
 
                     Snackbar.make(_qrScanner, R.string.permission_camera_refused, Snackbar.LENGTH_LONG)
@@ -89,7 +111,7 @@ public class CodeReaderActivity extends AppCompatActivity {
         }
     }
 
-    private void scannQR() {
+    private void scanQR() {
         _qrScanner.decodeContinuous(new BarcodeCallback() {
             @Override
             public void barcodeResult(BarcodeResult result) {
@@ -105,13 +127,39 @@ public class CodeReaderActivity extends AppCompatActivity {
     }
 
     private void updateText(String text) {
-        Session session = new Session();
         session.setIdMesa(Integer.parseInt(text));
 
         Intent menuIntent = new Intent(CodeReaderActivity.this, MenuActivity.class);
-        menuIntent.putExtra("idMesa", session.getIdMesa().toString());
+        menuIntent.putExtra("idTable", session.getIdMesa());
+        menuIntent.putExtra("idSession", session.getId());
+        menuIntent.putExtra("idUser", session.getIdUser());
         startActivity(menuIntent);
         finish();
+    }
+
+    public void InitializeSession()
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.url))
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        SessionService sessionService = retrofit.create(SessionService.class);
+
+        Call<Session> call = sessionService.Create(session.getIdMesa(), session.getIdUser());
+        call.enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(Call<Session> call, Response<Session> response) {
+                session = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Session> call, Throwable t) {
+                Snackbar.make(_btnProceed, "Falha ao criar a sessão", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                InitializeSession();
+            }
+        });
     }
 
     protected void beepSound() {
