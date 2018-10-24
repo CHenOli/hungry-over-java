@@ -1,16 +1,6 @@
 package com.tcc.carloshenrique.hungryover.models;
 
-import android.content.res.Resources;
-
 import com.squareup.moshi.Json;
-import com.tcc.carloshenrique.hungryover.R;
-import com.tcc.carloshenrique.hungryover.network.UserService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class UserModel {
 
@@ -95,7 +85,7 @@ public class UserModel {
         return image;
     }
 
-    public void setImage(String password) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -36,13 +36,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CodeReaderActivity extends AppCompatActivity {
-
     @BindView(R.id.dbvBarcode)
     DecoratedBarcodeView _qrScanner;
     @BindView(R.id.fabProceed)
     FloatingActionButton _btnProceed;
 
-    private UserModel user;
+    private int idTable;
+    private UserModel user = new UserModel();
     private Session session = new Session();
     private boolean permission = false;
     final int PERMISSIONS_REQUEST_CAMERA = 0;
@@ -60,9 +60,6 @@ public class CodeReaderActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         user.setId(intent.getIntExtra("idUser", 0));
-        session.setIdUser(user.getId());
-
-        Configure();
 
         _btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,12 +98,10 @@ public class CodeReaderActivity extends AppCompatActivity {
                     permission = true;
                     scanQR();
                 } else {
-
                     Snackbar.make(_qrScanner, R.string.permission_camera_refused, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     checkPermissions();
                 }
-                return;
             }
         }
     }
@@ -126,15 +121,11 @@ public class CodeReaderActivity extends AppCompatActivity {
         });
     }
 
-    private void updateText(String text) {
-        session.setIdMesa(Integer.parseInt(text));
-
-        Intent menuIntent = new Intent(CodeReaderActivity.this, MenuActivity.class);
-        menuIntent.putExtra("idTable", session.getIdMesa());
-        menuIntent.putExtra("idSession", session.getId());
-        menuIntent.putExtra("idUser", session.getIdUser());
-        startActivity(menuIntent);
-        finish();
+    private void updateText(String text){
+        beepSound();
+        idTable = Integer.parseInt(text);
+        pauseScanner();
+        Configure();
     }
 
     public void InitializeSession()
@@ -146,20 +137,33 @@ public class CodeReaderActivity extends AppCompatActivity {
 
         SessionService sessionService = retrofit.create(SessionService.class);
 
-        Call<Session> call = sessionService.Create(session.getIdMesa(), session.getIdUser());
+        int idUser = user.getId();
+
+        Call<Session> call = sessionService.Create(idUser, idTable);
         call.enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 session = response.body();
+                InitializeMenu();
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
                 Snackbar.make(_btnProceed, "Falha ao criar a sessão", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                resumeScanner();
                 InitializeSession();
             }
         });
+    }
+
+    private void InitializeMenu() {
+        Intent menuIntent = new Intent(CodeReaderActivity.this, MenuActivity.class);
+        menuIntent.putExtra("idSession", session.getId());
+        menuIntent.putExtra("idTable", idTable);
+        menuIntent.putExtra("idUser", user.getId());
+        startActivity(menuIntent);
+        finish();
     }
 
     protected void beepSound() {

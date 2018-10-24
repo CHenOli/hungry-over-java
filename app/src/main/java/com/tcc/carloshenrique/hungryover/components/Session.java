@@ -2,24 +2,21 @@ package com.tcc.carloshenrique.hungryover.components;
 
 import com.squareup.moshi.Json;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
-
-import java.util.Date;
+import com.tcc.carloshenrique.hungryover.models.UserModel;
 import java.util.List;
 
 public class Session {
 
     @Json(name = "id")
     private Integer id;
-    @Json(name = "idMesa")
-    private Integer idMesa;
-    @Json(name = "idUser")
-    private Integer idUser;
+    @Json(name = "cliente")
+    private UserModel user;
     @Json(name = "pedidos")
     private List<ItemModel> pedidos;
     @Json(name = "abertura")
-    private Date abertura;
+    private String abertura;
     @Json(name = "fechamento")
-    private Date fechamento;
+    private String fechamento;
     @Json(name = "valor")
     private double valor;
 
@@ -39,32 +36,6 @@ public class Session {
         return this;
     }
 
-    public Integer getIdMesa() {
-        return idMesa;
-    }
-
-    public void setIdMesa(Integer idMesa) {
-        this.idMesa = idMesa;
-    }
-
-    public Session withIdMesa(Integer idMesa) {
-        this.idMesa = idMesa;
-        return this;
-    }
-
-    public Integer getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
-    }
-
-    public Session withIdUser(Integer idUser) {
-        this.idUser = idUser;
-        return this;
-    }
-
     public List<ItemModel> getPedidos() {
         return pedidos;
     }
@@ -78,28 +49,28 @@ public class Session {
         return this;
     }
 
-    public Date getAbertura() {
+    public String getAbertura() {
         return abertura;
     }
 
-    public void setAbertura(Date abertura) {
+    public void setAbertura(String abertura) {
         this.abertura = abertura;
     }
 
-    public Session withAbertura(Date abertura) {
+    public Session withAbertura(String abertura) {
         this.abertura = abertura;
         return this;
     }
 
-    public Date getFechamento() {
+    public String getFechamento() {
         return fechamento;
     }
 
-    public void setFechamento(Date fechamento) {
+    public void setFechamento(String fechamento) {
         this.fechamento = fechamento;
     }
 
-    public Session withFechamento(Date fechamento) {
+    public Session withFechamento(String fechamento) {
         this.fechamento = fechamento;
         return this;
     }
@@ -115,5 +86,13 @@ public class Session {
     public Session withValor(Double valor) {
         this.valor = valor;
         return this;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

@@ -9,43 +9,157 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:background="@drawable/my_border_relative">
+
+        <TextView
+            android:id="@+id/txtItemCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/my_border_relative">
+            android:layout_above="@+id/txtItemName"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="21dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="15sp"
+            tools:text="Pizza" />
 
-            <TextView
-                android:id="@+id/txtItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_toStartOf="@+id/imgSeparator"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="30dp"
-                tools:text="Calabresa" />
+        <TextView
+            android:id="@+id/txtItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="-8dp"
+            android:layout_marginEnd="-4dp"
+            android:layout_marginBottom="109dp"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="30sp"
+            tools:text="Calabresa" />
 
-            <ImageView
-                android:id="@+id/imgSeparator"
-                android:layout_width="48dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="0dp"
-                android:layout_toStartOf="@id/txtPrice"
-                android:scaleType="fitXY"
-                android:src="@drawable/test2" />
+        <TextView
+            android:id="@+id/txtItemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="101dp"
+            android:layout_marginBottom="111dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="R$: 19,90"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/txtPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="0dp"
-                android:contentDescription="Price"
-                android:fontFamily="@font/roboto_regular"
-                android:padding="16dp"
-                android:text="R$: 19,90"
-                android:textSize="18dp" />
-        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="99dp"
+            android:layout_marginBottom="99dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="331dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="114dp"
+            android:text="x" />
+
+        <TextView
+            android:id="@+id/txtItemAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="343dp"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="110dp"
+            android:text="3"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="198dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="61dp"
+            android:text="Total:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtItemTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="272dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="61dp"
+            android:text="R$: 59,70"
+            android:textSize="20sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_ItemAdd"
+            android:layout_width="82dp"
+            android:layout_height="27dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="157dp"
+            android:layout_marginEnd="278dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ripple_color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_thin"
+            android:text="ADICIONAR"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_ItemInfo"
+            android:layout_width="82dp"
+            android:layout_height="27dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="109dp"
+            android:layout_marginTop="157dp"
+            android:layout_marginEnd="183dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ripple_color_primary"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/roboto_thin"
+            android:text="REMOVER"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -43,19 +43,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    //@BindView(R.id.img_profile) ImageView _imgProfile;
-    //@BindView(R.id.txt_name) TextView _txtName;
-    //@BindView(R.id.txt_email) TextView _txtEmail;
-
     private ItemAdapter itemAdapter;
 
-    private UserModel User;
-    private List<CategoryModel> Categories;
-    private List<ItemModel> Items;
-    private List<ItemModel> OrderItems;
+    private UserModel user;
+    private RestaurantModel restaurant;
+    private List<CategoryModel> categories;
+    private List<ItemModel> items;
+    private List<ItemModel> orderItems;
 
-    private int idRestaurant = 0;
     private int idTable = 0;
     private int idUser = 0;
     private int idSession = 0;
@@ -99,9 +94,9 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        OrderItems = new ArrayList<>();
-        Categories = new ArrayList<>();
-        Items = new ArrayList<>();
+        orderItems = new ArrayList<>();
+        categories = new ArrayList<>();
+        items = new ArrayList<>();
 
         Intent intent = getIntent();
         try {
@@ -122,7 +117,7 @@ public class MenuActivity extends AppCompatActivity
                 scrollCategories.setVisibility(View.GONE);
                 scrollItems.setVisibility(View.VISIBLE);
 
-                int id = Categories.get(position).getId();
+                int id = categories.get(position).getId();
                 getItemData(id);
             }
 
@@ -148,7 +143,6 @@ public class MenuActivity extends AppCompatActivity
     private void Configure() {
         getUserData(idUser);
         getRestaurant(idTable);
-        getCategoryData(idRestaurant);
     }
 
     private void getRestaurant(int idMesa) {
@@ -163,8 +157,10 @@ public class MenuActivity extends AppCompatActivity
         call.enqueue((new Callback<RestaurantModel>() {
             @Override
             public void onResponse(Call<RestaurantModel> call, Response<RestaurantModel> response) {
-                if(response.body() != null)
-                    idRestaurant = response.body().getId();
+                if(response.body() != null) {
+                    restaurant = response.body();
+                    getCategoryData(restaurant.getId());
+                }
             }
 
             @Override
@@ -174,7 +170,7 @@ public class MenuActivity extends AppCompatActivity
         }));
     }
 
-    public UserModel getUserData(int idUser) {
+    public void getUserData(int idUser) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -187,17 +183,16 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                if(statusCode == 200)
-                    User = response.body();
+                if (statusCode == 200)
+                    user = response.body();
             }
+
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
                 call.cancel();
-                User = null;
+                user = null;
             }
         });
-
-        return User;
     }
 
     public void getCategoryData(int idRestaurant) {
@@ -215,8 +210,8 @@ public class MenuActivity extends AppCompatActivity
                 int statusCode = response.code();
                 if(response.body() != null)
                 {
-                    Categories.addAll(response.body());
-                    setupCategoryRecycler(Categories);
+                    categories.addAll(response.body());
+                    setupCategoryRecycler(categories);
                 }
             }
             @Override
@@ -239,8 +234,8 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<List<ItemModel>> call, Response<List<ItemModel>> response) {
                 int statusCode = response.code();
-                Items.addAll(response.body());
-                setupItemRecycler(Items);
+                items.addAll(response.body());
+                setupItemRecycler(items);
             }
             @Override
             public void onFailure(Call<List<ItemModel>> call, Throwable t) {
@@ -299,17 +294,17 @@ public class MenuActivity extends AppCompatActivity
 
         if (id == R.id.menu_my_cart) {
             if(itemAdapter == null) {
-                Snackbar.make(mainToolbar, "O carrinho está vazio", Snackbar.LENGTH_LONG)
+                Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
             else {
-                OrderItems.addAll(itemAdapter.getCartItems());
+                orderItems.addAll(itemAdapter.getCartItems());
 
-                if(OrderItems.size() > 1) {
+                if(orderItems.size() > 1) {
                     Intent intent = new Intent(this, CartActivity.class);
                     startActivity(intent);
                 } else {
-                    Snackbar.make(mainToolbar, "O carrinho está vazio", Snackbar.LENGTH_LONG)
+                    Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }

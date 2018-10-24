@@ -8,6 +8,9 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.CartActivity">
 
-    <include layout="@layout/content_cart" />
+    <include
+        layout="@layout/cart_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

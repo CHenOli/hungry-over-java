@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
         android:layout_width="85dp"
         android:layout_height="200dp"
-        android:indeterminateTint="#6E6E6E"
+        android:indeterminateTint="#FFFFFF"
         android:indeterminateTintMode="src_atop"
         tools:layout_editor_absoluteX="0dp" />
 </android.support.constraint.ConstraintLayout>

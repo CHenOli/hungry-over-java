@@ -10,6 +10,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
@@ -40,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     Button _loginButton;
     @BindView(R.id.link_signup)
     TextView _signupLink;
+    @BindView(R.id.loginSpinner)
+    ProgressBar _pgbLogin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,66 +59,56 @@ public class LoginActivity extends AppCompatActivity {
         //getWindow().setBackgroundDrawableResource(R.drawable.login_bg);
         ButterKnife.bind(this);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
+        Intent intent = getIntent();
 
-        final UserService clienteService = retrofit.create(UserService.class);
+        if(intent.getStringExtra("email") != null && intent.getStringExtra("password") != null) {
+            _emailText.setText(intent.getStringExtra("email"));
+            _passwordText.setText(intent.getStringExtra("password"));
+            login();
+        }
 
         _emailText.setText("eduardo@teste.com");
         _passwordText.setText("123456");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String email = _emailText.getText().toString();
                 String password = _passwordText.getText().toString();
-                login(email, password, clienteService);
+
+                DeactivateFields();
+                login();
             }
         });
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
     }
 
-    public void login(final String email, String password, UserService clienteService) {
+    public void login() {
         Log.d(TAG, "Login");
 
         if (!validate()) {
-            onLoginFailed();
+            onLoginFailed(false);
             return;
         }
-
-        _loginButton.setEnabled(false);
-
-        final MaterialSimpleDialog dialog = new MaterialSimpleDialog(LoginActivity.this);
-        dialog.setTitle("Autenticando")
-                //Use this if you want to set a text message
-                .setMessage("Só mais um momentinho...")
-
-                //Use this for a custom layout resource
-                //.setCustomViewResource(R.layout.dialog_layout_base)
-
-                //Or pass the View
-                //.setCustomView(yourView);
-
-                //Set cancelable on touch outside (default true)
-                .dismissOnTouchOutside(false);
-        dialog.show();
 
         user = new UserModel();
 
         user.setEmail(_emailText.getText().toString());
         user.setPassword(_passwordText.getText().toString());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.url))
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final UserService clienteService = retrofit.create(UserService.class);
 
         Call<UserModel> call = clienteService.login(user);
         call.enqueue(new Callback<UserModel>() {
@@ -124,24 +118,10 @@ public class LoginActivity extends AppCompatActivity {
                 user = response.body();
                 if(statusCode == 200)
                 {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onLoginSuccess();
-                            dialog.dismiss();
-                        }
-                    }, 1000);
-                    _loginButton.setEnabled(true);
+                    onLoginSuccess();
                 }
                 else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            onLoginFailed();
-                            dialog.dismiss();
-                            return;
-                        }
-                    }, 3000);
+                    onLoginFailed(false);
                 }
             }
 
@@ -150,6 +130,13 @@ public class LoginActivity extends AppCompatActivity {
                 call.cancel();
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onLoginFailed(true);
+            }
+        }, 10000);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -169,17 +156,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
-        Intent menuIntent = new Intent(LoginActivity.this, CodeReaderActivity.class);
-        menuIntent.putExtra("idUser", user.getId());
-        startActivity(menuIntent);
+        Intent codeIntent = new Intent(LoginActivity.this, CodeReaderActivity.class);
+        codeIntent.putExtra("idUser", user.getId());
+        startActivity(codeIntent);
         finish();
     }
 
-    public void onLoginFailed() {
-        Snackbar.make(_loginButton, "Falha no login.", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        _loginButton.setEnabled(true);
+    public void onLoginFailed(boolean timeout) {
+        ActivateFields();
+
+        if(timeout) {
+            Snackbar.make(_loginButton, "Verifique sua conexão e tente novamente.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            Snackbar.make(_loginButton, "Login ou senha incorretos.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
     public boolean validate() {
@@ -203,5 +195,27 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+    private void DeactivateFields() {
+        _loginButton.setText(null);
+        _loginButton.setEnabled(false);
+        _pgbLogin.setVisibility(View.VISIBLE);
+
+        _emailText.setEnabled(false);
+        _passwordText.setEnabled(false);
+
+        _signupLink.setEnabled(false);
+    }
+
+    private void ActivateFields() {
+        _loginButton.setText(R.string.action_login);
+        _loginButton.setEnabled(true);
+        _pgbLogin.setVisibility(View.INVISIBLE);
+
+        _emailText.setEnabled(true);
+        _passwordText.setEnabled(true);
+
+        _signupLink.setEnabled(true);
     }
 }

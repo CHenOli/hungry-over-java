@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">HungryOver</string>
 
+    <string name="title_activity_payment">PaymentActivity</string>
+    <string name="title_activity_card">CardActivity</string>
+
     <!-- activity_login strings -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
@@ -10,8 +13,6 @@
     <string name="error_invalid_password">Essa senha é muito curta</string>
     <string name="error_incorrect_password">A senha esta errada</string>
     <string name="error_field_required">Por favor, preencha esse campo</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions.</string>
     <string name="title_activity_menu">Bem-vindo(a)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -43,6 +44,7 @@
 
     <!-- permissions -->
     <string name="permission_camera_refused">A permissão da câmera é necessária para ler o código da mesa.</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions.</string>
 
     <!-- navigation -->
     <string name="nav_title_personal_info">Dados Pessoais</string>
@@ -52,5 +54,5 @@
     <string name="item_amount">"Informe a quantidade:"</string>
 
     <!-- URL -->
-    <string name="url">http://52.90.180.18:8080/</string>
+    <string name="url">http://52.90.180.18:8080</string>
 </resources>

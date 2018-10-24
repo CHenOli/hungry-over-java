@@ -9,11 +9,6 @@
     tools:context=".activities.CartActivity"
     tools:showIn="@layout/cart_toolbar">
 
-    <include
-        layout="@layout/cart_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <ScrollView
         android:id="@+id/scrollCategories"
         android:paddingTop="10dp"
@@ -24,7 +19,7 @@
             android:id="@+id/rvwOrderItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/holder_categories"/>
+            tools:listitem="@layout/holder_items"/>
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

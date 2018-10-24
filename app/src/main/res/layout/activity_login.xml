@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,96 +12,109 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
+            android:orientation="vertical"
             android:paddingLeft="24dp"
+            android:paddingTop="30dp"
             android:paddingRight="24dp">
 
             <!-- Logo -->
             <ImageView
-                android:contentDescription="@string/app_name"
-                android:layout_width="400dp"
+                android:layout_width="390dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="0dp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/logo_main" />
 
             <!-- Label do Email -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp">
-                <EditText android:id="@+id/input_email"
+                android:layout_marginTop="1dp">
+
+                <EditText
+                    android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:textColor="@android:color/white"
-                    android:hint="@string/email" />
+                    android:textColor="@android:color/white" />
             </android.support.design.widget.TextInputLayout>
 
             <!-- Label da Senha -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="5dp">
-                <EditText android:id="@+id/input_password"
+                android:layout_marginTop="1dp">
+
+                <EditText
+                    android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:textColor="@android:color/white"
-                    android:hint="@string/password"/>
+                    android:textColor="@android:color/white" />
             </android.support.design.widget.TextInputLayout>
 
 
-            <!-- Botão Entrar -->
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btn_login"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="24dp"
-                android:padding="12dp"
-                android:background="@drawable/ripple"
-                android:foreground="@drawable/my_border"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:text="@string/action_login"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!-- Text "Não tem conta" -->
-            <TextView
-                android:id="@+id/link_signup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:background="#50FFFFFF"
-                android:foreground="@drawable/ripple"
-                android:padding="8dp"
-                android:textColor="@android:color/white"
-                android:text="@string/account_no"
-                android:textSize="16sp" />
+                <!-- Botão Entrar -->
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_login"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/ripple"
+                    android:foreground="@drawable/my_border"
+                    android:padding="12dp"
+                    android:text="@string/action_login"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.1"
+                    tools:layout_editor_absoluteX="0dp" />
 
-            <!-- Text "Esqueceu a senha" -->
-            <TextView
-                android:id="@+id/link_forgotpassword"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="#50FFFFFF"
-                android:foreground="@drawable/ripple"
-                android:padding="8dp"
-                android:textColor="@android:color/white"
-                android:text="@string/forgot_password"
-                android:textSize="16sp" />
+                <ProgressBar
+                    android:id="@+id/loginSpinner"
+                    android:layout_width="31dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="false"
+                    android:indeterminateTint="#FFFFFF"
+                    android:indeterminateTintMode="src_atop"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_login"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/btn_login" />
+
+                <!-- Text "Não tem conta" -->
+                <TextView
+                    android:id="@+id/link_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#50FFFFFF"
+                    android:foreground="@drawable/ripple"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/account_no"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.122"/>
+
+            </android.support.constraint.ConstraintLayout>
         </LinearLayout>
-    </ScrollView>
 </FrameLayout>

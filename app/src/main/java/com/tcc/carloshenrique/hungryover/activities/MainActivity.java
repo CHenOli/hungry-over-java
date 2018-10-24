@@ -10,12 +10,8 @@ import com.tcc.carloshenrique.hungryover.R;
 
 
 public class MainActivity extends AppCompatActivity{
-    private static int SPLASH_TIME_OUT = 1000;
-
     protected void onCreate(Bundle SavedInstanceState) {
         super.onCreate(SavedInstanceState);
-        //Essa linha esconde a Barra de Notificações
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -27,6 +23,6 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(loginIntent);
                 finish();
             }
-        },SPLASH_TIME_OUT);
+        }, 1000);
     }
 }
