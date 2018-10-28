@@ -32,6 +32,7 @@
             android:id="@+id/rvwItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
             tools:listitem="@layout/holder_items_card"/>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

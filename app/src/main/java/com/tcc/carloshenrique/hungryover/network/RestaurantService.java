@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface RestaurantService {
-    @GET("/getrestaurante/{table_id}")
+    @GET("/getrestauranteid/{table_id}")
     Call<RestaurantModel> getId(@Path(value = "table_id", encoded = true) int id);
 }

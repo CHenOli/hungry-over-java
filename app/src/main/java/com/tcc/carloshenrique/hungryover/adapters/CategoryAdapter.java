@@ -37,16 +37,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder> {
 
         RequestOptions requestOption = new RequestOptions();
         requestOption.fitCenter();
-                //.placeholder(R.drawable.placeholder).centerCrop()
 
         Glide.with(context).load(ApiCategories.get(position).getImage())
                            .apply(requestOption)
                            .into(holder.imgCategory);
-
-        //holder.imgCategory.setImageURI(Uri.parse(ApiCategories.get(position).getImage()));
-        //Adicionar no onClick para abrir a activity correspondete ao item clicado
-        //holder.imgCategory.setOnClickListener(view -> ));
-        //holder.txtCategory.setOnClickListener(view -> ));
     }
 
     @Override
@@ -58,7 +52,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder> {
         insertItem(categories);
     }
 
-    // Método responsável por inserir um novo usuário na lista e notificar que há novos itens.
     private void insertItem(List<CategoryModel> categories) {
         ApiCategories.addAll(categories);
 

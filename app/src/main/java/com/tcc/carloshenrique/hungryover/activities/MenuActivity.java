@@ -1,5 +1,8 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,10 +26,12 @@ import com.tcc.carloshenrique.hungryover.adapters.ItemAdapter;
 import com.tcc.carloshenrique.hungryover.listeners.RecyclerTouchListener;
 import com.tcc.carloshenrique.hungryover.models.CategoryModel;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
+import com.tcc.carloshenrique.hungryover.models.OrderModel;
 import com.tcc.carloshenrique.hungryover.models.RestaurantModel;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
 import com.tcc.carloshenrique.hungryover.network.CategoryService;
 import com.tcc.carloshenrique.hungryover.network.ItemService;
+import com.tcc.carloshenrique.hungryover.network.OrderService;
 import com.tcc.carloshenrique.hungryover.network.RestaurantService;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
@@ -43,14 +48,19 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private Context context;
+
+    private CategoryAdapter categoryAdapter;
     private ItemAdapter itemAdapter;
 
     private UserModel user;
     private RestaurantModel restaurant;
+
     private List<CategoryModel> categories;
     private List<ItemModel> items;
     private List<ItemModel> orderItems;
 
+    private boolean resumed = true;
     private int idTable = 0;
     private int idUser = 0;
     private int idSession = 0;
@@ -60,32 +70,36 @@ public class MenuActivity extends AppCompatActivity
     @BindView(R.id.scrollItems) ScrollView scrollItems;
     @BindView(R.id.scrollCategories) ScrollView scrollCategories;
     @BindView(R.id.mainToolbar) Toolbar mainToolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Essa linha esconde a Barra de Notificações
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         setContentView(R.layout.activity_menu);
 
+        context = getApplicationContext();
+
         ButterKnife.bind(this);
 
-        mainToolbar = findViewById(R.id.mainToolbar);
         setSupportActionBar(mainToolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Aqui será implementada a função de Pedidos Rápidos", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showQuickOrderDialog();
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        resumed = false;
+
+        navView.getMenu().getItem(0).setChecked(true);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -113,7 +127,6 @@ public class MenuActivity extends AppCompatActivity
         rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
                 scrollCategories.setVisibility(View.GONE);
                 scrollItems.setVisibility(View.VISIBLE);
 
@@ -126,23 +139,37 @@ public class MenuActivity extends AppCompatActivity
 
             }
         }));
+    }
 
-        rvwItems.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
+    private void showQuickOrderDialog() {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pedido rápido")
+                .setMessage("Confirma realização do Pedido Rápido?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(context, PaymentActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+                    }
+                })
+                .show();
     }
 
     private void Configure() {
+        scrollCategories.setVisibility(View.VISIBLE);
+        scrollItems.setVisibility(View.GONE);
+
         getUserData(idUser);
         getRestaurant(idTable);
+
+        items.removeAll(items);
+        categories.removeAll(categories);
+        orderItems.removeAll(orderItems);
     }
 
     private void getRestaurant(int idMesa) {
@@ -178,7 +205,7 @@ public class MenuActivity extends AppCompatActivity
 
         final UserService clientService = retrofit.create(UserService.class);
 
-        Call<UserModel> call = clientService.getId(idUser);
+        Call<UserModel> call = clientService.getUser(idUser);
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -208,8 +235,7 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
                 int statusCode = response.code();
-                if(response.body() != null)
-                {
+                if(response.body() != null) {
                     categories.addAll(response.body());
                     setupCategoryRecycler(categories);
                 }
@@ -245,29 +271,16 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void setupCategoryRecycler(List<CategoryModel> categories) {
-        // Configurando o gerenciador de layout para ser uma lista.
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwCategory.setLayoutManager(layoutManager);
-
-        // Adiciona o adapter que irá anexar os objetos à lista.
-        // Está sendo criado com lista vazia, pois será preenchida posteriormente.
-
-        //List<CategoryModel> listCategories = getCategoryData(1);
-
-        rvwCategory.setAdapter(new CategoryAdapter(categories));
-
-        //rvwAdapter = new CategoryAdapter(listCategories);
-
-        //if(categories != null)
-          //  rvwAdapter.updateList(listCategories);
+        categoryAdapter = new CategoryAdapter(categories);
+        rvwCategory.setAdapter(categoryAdapter);
     }
 
     private void setupItemRecycler(List<ItemModel> items) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwItems.setLayoutManager(layoutManager);
-
         itemAdapter = new ItemAdapter((items));
-
         rvwItems.setAdapter(itemAdapter);
     }
 
@@ -276,14 +289,22 @@ public class MenuActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (scrollItems.getVisibility() == View.VISIBLE) {
+            scrollItems.setVisibility(View.GONE);
+            scrollCategories.setVisibility(View.VISIBLE);
         } else {
             super.onBackPressed();
         }
+
+        orderItems = new ArrayList<>();
+        categories = new ArrayList<>();
+        items = new ArrayList<>();
+
+        Configure();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -296,13 +317,12 @@ public class MenuActivity extends AppCompatActivity
             if(itemAdapter == null) {
                 Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
-            else {
+            } else {
                 orderItems.addAll(itemAdapter.getCartItems());
 
-                if(orderItems.size() > 1) {
-                    Intent intent = new Intent(this, CartActivity.class);
-                    startActivity(intent);
+                if(orderItems.size() > 0) {
+                    SendOrder();
+                    itemAdapter.ResetCarItems();
                 } else {
                     Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -314,27 +334,64 @@ public class MenuActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void SendOrder() {
+        OrderModel order = new OrderModel(user.getId(), idSession, orderItems, "");
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.url))
+                .addConverterFactory(MoshiConverterFactory.create())
+                .build();
+
+        final OrderService orderService = retrofit.create(OrderService.class);
+
+        Call<OrderModel> call = orderService.sendOrder(order);
+        call.enqueue(new Callback<OrderModel>() {
+            @Override
+            public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                StartCart();
+            }
+
+            @Override
+            public void onFailure(Call<OrderModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void StartCart() {
+        Intent intent = new Intent(this, CartActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_pagamento) {
-
-        } else if (id == R.id.nav_cardapio) {
-
+        if (id == R.id.nav_cardapio) {
+            item.setChecked(true);
+            Configure();
         } else if (id == R.id.nav_pedidos) {
 
         } else if (id == R.id.nav_favoritos) {
-
-        } else if (id == R.id.nav_conta) {
 
         } else if (id == R.id.nav_config) {
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if(resumed) {
+            Configure();
+        }
+
+        resumed = true;
     }
 }

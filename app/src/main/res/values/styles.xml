@@ -21,18 +21,10 @@
     </style>
 
     <style name="BlackTextInput">
-        <!-- Mudando a cor da linha do Text Input Layout. -->
-        <item name="colorControlNormal">#000000</item>
-        <item name="colorControlActivated">#000000</item>
-        <item name="colorControlHighlight">#000000</item>
-        <!-- Mudando a cor do Texto do Text Input Layout. -->
-        <item name="android:textColorHint">#000000</item>
-    </style>
-
-    <style name="FAB_WhiteBorder">
-        <item name="colorPrimary">@android:color/white</item>
-        <item name="colorPrimaryDark">@android:color/white</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@android:color/darker_gray</item>
+        <item name="colorControlHighlight">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

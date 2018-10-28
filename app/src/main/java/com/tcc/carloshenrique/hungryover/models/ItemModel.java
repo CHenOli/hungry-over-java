@@ -8,19 +8,21 @@ public class ItemModel {
     @Json(name = "nome")
     private String nome;
     @Json(name = "urlImagem")
-    private String urlImagem;
+    private String urlImage;
+    @Json(name = "caminhoImagem")
+    private String pathImage;
     @Json(name = "valor")
     private Float valor;
     
     public ItemModel() {
-        
+
     }
 
-    public ItemModel(Integer id, String nome, String urlImagem, Float valor) {
+    public ItemModel(Integer id, String nome, String urlImage, Float valor) {
         super();
         this.id = id;
         this.nome = nome;
-        this.urlImagem = urlImagem;
+        this.urlImage = urlImage;
         this.valor = valor;
     }
 
@@ -50,16 +52,29 @@ public class ItemModel {
         return this;
     }
 
-    public String getUrlImagem() {
-        return urlImagem;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public void setUrlImagem(String urlImagem) {
-        this.urlImagem = urlImagem;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
-    public ItemModel withUrlImagem(String urlImagem) {
-        this.urlImagem = urlImagem;
+    public ItemModel withUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+        return this;
+    }
+
+    public String getPathImage() {
+        return pathImage;
+    }
+
+    public void setPathImage(String pathImage) {
+        this.pathImage = pathImage;
+    }
+
+    public ItemModel withPathImage(String pathImage) {
+        this.pathImage = pathImage;
         return this;
     }
 

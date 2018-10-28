@@ -64,9 +64,7 @@ public class CodeReaderActivity extends AppCompatActivity {
         _btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent menuIntent = new Intent(CodeReaderActivity.this, MenuActivity.class);
-                startActivity(menuIntent);
-                finish();
+                updateText("1");
             }
         });
 
@@ -143,16 +141,17 @@ public class CodeReaderActivity extends AppCompatActivity {
         call.enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
-                session = response.body();
-                InitializeMenu();
+                if(session != null) {
+                    session = response.body();
+                    InitializeMenu();
+                } else {
+                    InitializeSessionFailed();
+                }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                Snackbar.make(_btnProceed, "Falha ao criar a sessão", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                resumeScanner();
-                InitializeSession();
+                InitializeSessionFailed();
             }
         });
     }
@@ -164,6 +163,12 @@ public class CodeReaderActivity extends AppCompatActivity {
         menuIntent.putExtra("idUser", user.getId());
         startActivity(menuIntent);
         finish();
+    }
+
+    public void InitializeSessionFailed() {
+        Snackbar.make(_btnProceed, "Falha ao criar a sessão", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        resumeScanner();
     }
 
     protected void beepSound() {

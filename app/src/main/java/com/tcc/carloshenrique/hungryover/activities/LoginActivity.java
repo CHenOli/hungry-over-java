@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         if(intent.getStringExtra("email") != null && intent.getStringExtra("password") != null) {
             _emailText.setText(intent.getStringExtra("email"));
             _passwordText.setText(intent.getStringExtra("password"));
+            DeactivateFields();
             login();
         }
 

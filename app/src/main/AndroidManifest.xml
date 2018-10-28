@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tcc.carloshenrique.hungryover"
-    android:process="br.com.hungryover">
+    android:process="br.com.hungryover.app">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -46,20 +46,25 @@
         <activity android:name=".activities.CodeReaderActivity" />
         <activity
             android:name=".activities.MyAccountActivity"
+            android:label="@string/title_activity_my_account"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.CartActivity"
             android:label="@string/title_activity_order"
+            android:screenOrientation="portrait"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.PaymentActivity"
             android:label="@string/title_activity_payment"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.CardActivity"
             android:label="@string/title_activity_card"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -28,6 +28,7 @@ public class CartActivity extends AppCompatActivity {
 
     @BindView(R.id.rvwOrderItems) RecyclerView rvwOrderItems;
     @BindView(R.id.mainToolbar) Toolbar mainToolbar;
+    @BindView(R.id.fab_payment) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,11 @@ public class CartActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mainToolbar = findViewById(R.id.mainToolbar);
         setSupportActionBar(mainToolbar);
         getSupportActionBar().setTitle("Meu Pedido");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +79,6 @@ public class CartActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_my_cart) {
-
             return true;
         }
 

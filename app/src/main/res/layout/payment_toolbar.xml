@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CartActivity">
+    tools:context=".activities.PaymentActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,21 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
+            android:background="@color/payment"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_cart" />
+    <include
+        layout="@layout/content_payment"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_payment"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        app:borderWidth="0dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:backgroundTint="@color/payment"
-        app:srcCompat="@drawable/ic_payment_white" />
-
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

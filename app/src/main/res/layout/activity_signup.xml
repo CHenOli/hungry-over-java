@@ -116,7 +116,7 @@
                     app:layout_constraintHorizontal_bias="0.501"
                     app:layout_constraintStart_toStartOf="@+id/btnSignUp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.111" />
+                    app:layout_constraintVertical_bias="0.086" />
 
                 <TextView
                     android:id="@+id/link_login"
