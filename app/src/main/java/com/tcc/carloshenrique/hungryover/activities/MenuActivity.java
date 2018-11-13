@@ -1,10 +1,12 @@
 package com.tcc.carloshenrique.hungryover.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.adapters.CategoryAdapter;
@@ -53,6 +58,7 @@ public class MenuActivity extends AppCompatActivity
     private CategoryAdapter categoryAdapter;
     private ItemAdapter itemAdapter;
 
+    private OrderModel order;
     private UserModel user;
     private RestaurantModel restaurant;
 
@@ -60,11 +66,19 @@ public class MenuActivity extends AppCompatActivity
     private List<ItemModel> items;
     private List<ItemModel> orderItems;
 
+    private boolean notScanned = false;
+    private boolean firstLaunch = true;
     private boolean resumed = true;
+
+    private int idOrder = 0;
     private int idTable = 0;
     private int idUser = 0;
     private int idSession = 0;
 
+    private TextView txtUserEmail;
+    private TextView txtUserName;
+
+    @BindView(R.id.prgMenu) ProgressBar prgMenu;
     @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
     @BindView(R.id.rvwItems) RecyclerView rvwItems;
     @BindView(R.id.scrollItems) ScrollView scrollItems;
@@ -72,6 +86,9 @@ public class MenuActivity extends AppCompatActivity
     @BindView(R.id.mainToolbar) Toolbar mainToolbar;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navView;
+    @BindView(R.id.txtTapHere) TextView txtTapHere;
+    @BindView(R.id.txtToStart) TextView txtToStart;
+    @BindView(R.id.txtScann) TextView txtScann;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +97,16 @@ public class MenuActivity extends AppCompatActivity
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         setContentView(R.layout.activity_menu);
 
         context = getApplicationContext();
 
         ButterKnife.bind(this);
+
+        View viewDrawer = navView.getHeaderView(0);
+        txtUserEmail = viewDrawer.findViewById(R.id.txtUserEmail);
+        txtUserName = viewDrawer.findViewById(R.id.txtUserName);
 
         setSupportActionBar(mainToolbar);
 
@@ -95,6 +117,9 @@ public class MenuActivity extends AppCompatActivity
                 showQuickOrderDialog();
             }
         });
+
+        scrollCategories.setVisibility(View.GONE);
+        scrollItems.setVisibility(View.GONE);
 
         resumed = false;
 
@@ -122,23 +147,39 @@ public class MenuActivity extends AppCompatActivity
                     .setAction("Action", null).show();
         }
 
-        Configure();
+        if(idTable != 0) {
+            Configure();
+            rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    scrollCategories.setVisibility(View.GONE);
+                    scrollItems.setVisibility(View.VISIBLE);
 
-        rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                scrollCategories.setVisibility(View.GONE);
-                scrollItems.setVisibility(View.VISIBLE);
+                    int id = categories.get(position).getId();
+                    getItemData(id);
+                }
 
-                int id = categories.get(position).getId();
-                getItemData(id);
-            }
+                @Override
+                public void onLongClick(View view, int position) {
 
-            @Override
-            public void onLongClick(View view, int position) {
+                }
+            }));
+        } else {
+            HideFields();
+            notScanned = true;
+            txtTapHere.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ScannTable();
+                }
+            });
+        }
+    }
 
-            }
-        }));
+    private void ScannTable() {
+        Intent intent = new Intent(this, CodeReaderActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 
     private void showQuickOrderDialog() {
@@ -161,6 +202,9 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void Configure() {
+        //if(itemAdapter != null)
+            //orderItems = itemAdapter.getCartItems();
+
         scrollCategories.setVisibility(View.VISIBLE);
         scrollItems.setVisibility(View.GONE);
 
@@ -169,7 +213,8 @@ public class MenuActivity extends AppCompatActivity
 
         items.removeAll(items);
         categories.removeAll(categories);
-        orderItems.removeAll(orderItems);
+
+        //orderItems.removeAll(orderItems);
     }
 
     private void getRestaurant(int idMesa) {
@@ -192,7 +237,7 @@ public class MenuActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<RestaurantModel> call, Throwable t) {
-
+                call.cancel();
             }
         }));
     }
@@ -210,8 +255,11 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
-                if (statusCode == 200)
+                if (statusCode == 200) {
                     user = response.body();
+                    txtUserEmail.setText(response.body().getEmail());
+                    txtUserName.setText(response.body().getName());
+                }
             }
 
             @Override
@@ -237,7 +285,7 @@ public class MenuActivity extends AppCompatActivity
                 int statusCode = response.code();
                 if(response.body() != null) {
                     categories.addAll(response.body());
-                    setupCategoryRecycler(categories);
+                    setupCategoryRecycler();
                 }
             }
             @Override
@@ -270,7 +318,7 @@ public class MenuActivity extends AppCompatActivity
         });
     }
 
-    private void setupCategoryRecycler(List<CategoryModel> categories) {
+    private void setupCategoryRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvwCategory.setLayoutManager(layoutManager);
         categoryAdapter = new CategoryAdapter(categories);
@@ -294,11 +342,11 @@ public class MenuActivity extends AppCompatActivity
             scrollCategories.setVisibility(View.VISIBLE);
         } else {
             super.onBackPressed();
-        }
 
-        orderItems = new ArrayList<>();
-        categories = new ArrayList<>();
-        items = new ArrayList<>();
+            //orderItems = new ArrayList<>();
+            categories = new ArrayList<>();
+            items = new ArrayList<>();
+        }
 
         Configure();
     }
@@ -335,7 +383,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void SendOrder() {
-        OrderModel order = new OrderModel(user.getId(), idSession, orderItems, "");
+        order = new OrderModel(user.getId(), idSession, orderItems, "");
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.url))
@@ -348,6 +396,7 @@ public class MenuActivity extends AppCompatActivity
         call.enqueue(new Callback<OrderModel>() {
             @Override
             public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                order.setId(response.body().getId());
                 StartCart();
             }
 
@@ -360,6 +409,7 @@ public class MenuActivity extends AppCompatActivity
 
     private void StartCart() {
         Intent intent = new Intent(this, CartActivity.class);
+        intent.putExtra("orderId", order.getId());
         startActivity(intent);
     }
 
@@ -388,10 +438,55 @@ public class MenuActivity extends AppCompatActivity
     public void onResume(){
         super.onResume();
 
-        if(resumed) {
-            Configure();
+        HideFieldsLoading();
+
+        Intent intent = getIntent();
+        try
+        {
+            idOrder = intent.getIntExtra("idOrder", 0);
+        }catch (Exception e)
+        {
+
         }
 
-        resumed = true;
+        if(!firstLaunch)
+            Configure();
+
+        firstLaunch = false;
+    }
+
+    public void HideFields() {
+        scrollItems.setVisibility(View.GONE);
+        scrollCategories.setVisibility(View.GONE);
+
+        txtToStart.setVisibility(View.VISIBLE);
+        txtTapHere.setVisibility(View.VISIBLE);
+        txtScann.setVisibility(View.VISIBLE);
+    }
+
+    public void HideFieldsLoading() {
+        if(!notScanned) {
+            scrollItems.setVisibility(View.GONE);
+            scrollCategories.setEnabled(false);
+            scrollCategories.setVisibility(View.GONE);
+            prgMenu.setVisibility(View.VISIBLE);
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    prgMenu.setVisibility(View.GONE);
+                    scrollCategories.setEnabled(true);
+                    scrollCategories.setVisibility(View.VISIBLE);
+
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
+            }, 2000);
+
+            notScanned = false;
+        }
     }
 }

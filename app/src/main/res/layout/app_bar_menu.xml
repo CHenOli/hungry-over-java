@@ -34,4 +34,14 @@
         app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_dinner_white" />
 
+    <ProgressBar
+        android:id="@+id/prgMenu"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_atop"
+        tools:layout_editor_absoluteX="0dp" />/>
+
 </android.support.design.widget.CoordinatorLayout>

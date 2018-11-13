@@ -26,14 +26,18 @@ import java.util.List;
 
 import javax.crypto.spec.PSource;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
-    private List<ItemModel> OrderItems;
+    private List<ItemModel> OrderItems = new ArrayList<>();
     private final List<ItemModel> ApiItems;
     private Context context;
     private int Position;
 
+    private EditText txtAmount;
+
     public ItemAdapter(List<ItemModel> items) {
-        OrderItems = new ArrayList<>();
         ApiItems = items;
     }
 
@@ -46,8 +50,6 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
 
     @Override
     public void onBindViewHolder(final ItemHolder holder, final int position) {
-        Position = position;
-
         RequestOptions requestOption = new RequestOptions();
         requestOption.fitCenter();
 
@@ -61,13 +63,30 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         holder.btnItemAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.dialog_input, null);
+
+                txtAmount = view.findViewById(R.id.inputAmount);
+                txtAmount.setText("1");
+
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(context);
                 builder.setTitle("Quantidade")
                         .setMessage("Escolha a quantidade do item: ")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                OrderItems.add(ApiItems.get(Position));
+                                int amount = 0;
+                                if (txtAmount.getText() != null)
+                                    amount = Integer.parseInt(txtAmount.getText().toString());
+
+                                if (amount < 1) {
+                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.", Snackbar.LENGTH_SHORT)
+                                            .setAction("Action", null).show();
+                                }
+
+                                OrderItems.add(ApiItems.get(position));
+                                OrderItems.get(OrderItems.size() - 1).setAmount(amount);
+
                                 Snackbar.make(v, "Itens adicionados com sucesso.", Snackbar.LENGTH_SHORT)
                                         .setAction("Action", null).show();
                             }
@@ -77,7 +96,7 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
 
                             }
                         })
-                        .setView(R.layout.dialog_input)
+                        .setView(view)
                         .show();
             }
         });
@@ -99,7 +118,6 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         insertItem(items);
     }
 
-    // Método responsável por inserir um novo usuário na lista e notificar que há novos itens.
     private void insertItem(List<ItemModel> items) {
         ApiItems.addAll(items);
 

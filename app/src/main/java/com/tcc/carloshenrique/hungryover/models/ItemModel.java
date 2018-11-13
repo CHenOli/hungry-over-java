@@ -13,6 +13,8 @@ public class ItemModel {
     private String pathImage;
     @Json(name = "valor")
     private Float valor;
+    @Json(name = "quantidade")
+    private int amount;
     
     public ItemModel() {
 
@@ -23,6 +25,7 @@ public class ItemModel {
         this.id = id;
         this.nome = nome;
         this.urlImage = urlImage;
+        this.pathImage = pathImage;
         this.valor = valor;
     }
 
@@ -89,5 +92,13 @@ public class ItemModel {
     public ItemModel withValor(Float valor) {
         this.valor = valor;
         return this;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

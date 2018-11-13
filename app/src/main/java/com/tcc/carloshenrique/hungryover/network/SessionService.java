@@ -10,4 +10,8 @@ public interface SessionService {
     @POST("/sessao/{idUser}/{idTable}")
     Call<Session> Create(@Path("idUser") int idUser,
                          @Path("idTable") int idTable);
+
+    @POST("/sessao/fechar/{idSessao}/{dividir}")
+    Call<Session> Pay(@Path("idSessao") int idSession,
+                      @Path("dividir") int divide);
 }

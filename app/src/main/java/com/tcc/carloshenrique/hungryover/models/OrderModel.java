@@ -4,6 +4,8 @@ import com.squareup.moshi.Json;
 import java.util.List;
 
 public class OrderModel {
+    @Json(name = "idPedido")
+    private int Id;
     @Json(name = "idCliente")
     private int userId;
     @Json(name = "idSessao")
@@ -55,5 +57,13 @@ public class OrderModel {
 
     public void setObservations(String observations) {
         this.observations = observations;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 }

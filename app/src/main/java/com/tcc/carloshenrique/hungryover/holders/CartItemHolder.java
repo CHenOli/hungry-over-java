@@ -12,8 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CartItemHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.txtNameItem) public TextView txtItemName;
-    @BindView(R.id.txtPriceItem) public TextView txtItemPrice;
+    @BindView(R.id.txtItemName) public TextView txtItemName;
+    @BindView(R.id.txtItemPrice) public TextView txtItemPrice;
+    @BindView(R.id.txtItemCategory) public TextView txtItemCategory;
+    @BindView(R.id.txtItemAmount) public TextView txtItemAmount;
+    @BindView(R.id.txtItemTotal) public TextView txtItemTotal;
+    @BindView(R.id.btnItemAdd) public Button btnItemAdd;
+    @BindView(R.id.btnItemRemove) public Button btnItemRemove;
 
     public int ItemId;
 

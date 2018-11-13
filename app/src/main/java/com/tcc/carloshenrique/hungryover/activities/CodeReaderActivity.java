@@ -36,10 +36,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CodeReaderActivity extends AppCompatActivity {
-    @BindView(R.id.dbvBarcode)
-    DecoratedBarcodeView _qrScanner;
-    @BindView(R.id.fabProceed)
-    FloatingActionButton _btnProceed;
+    @BindView(R.id.dbvBarcode) DecoratedBarcodeView _qrScanner;
+    @BindView(R.id.fabProceed) FloatingActionButton _btnProceed;
 
     private int idTable;
     private UserModel user = new UserModel();
@@ -64,6 +62,8 @@ public class CodeReaderActivity extends AppCompatActivity {
         _btnProceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //ShowMenuActivity();
+                //APENAS TESTE ABAIXO
                 updateText("1");
             }
         });
@@ -71,6 +71,12 @@ public class CodeReaderActivity extends AppCompatActivity {
         if (permission) {
             scanQR();
         }
+    }
+
+    private void ShowMenuActivity() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void Configure()

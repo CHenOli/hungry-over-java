@@ -4,22 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.CartActivity"
     tools:showIn="@layout/cart_toolbar">
 
     <ScrollView
-        android:id="@+id/scrollCategories"
-        android:paddingTop="10dp"
+        android:id="@+id/scrollOrderItems"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvwOrderItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="200dp"
             tools:listitem="@layout/holder_items"/>
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>
