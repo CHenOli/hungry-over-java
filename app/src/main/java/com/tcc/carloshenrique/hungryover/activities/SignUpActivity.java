@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
+import com.tcc.carloshenrique.hungryover.network.RetrofitInstance;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import butterknife.BindView;
@@ -24,6 +25,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+
+import static com.tcc.carloshenrique.hungryover.utils.Constants.URL;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -95,12 +98,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void signup() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final UserService userService = retrofit.create(UserService.class);
+        final UserService userService = RetrofitInstance.getRetrofitInstance()
+                .create(UserService.class);
 
         if (!validate()) {
             onSignupFailed(false);
@@ -148,12 +147,12 @@ public class SignUpActivity extends AppCompatActivity {
     public void onSignupFailed(boolean timeout) {
         ActivateFields();
 
-        if(timeout) {
-            Snackbar.make(_signupButton, "Verifique sua conexão e tente novamente.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+        if (timeout) {
+            Snackbar.make(_signupButton, "Verifique sua conexão e tente novamente.",
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
-            Snackbar.make(_signupButton, "Por favor, verifique os dados e tente novamente.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(_signupButton, "Por favor, verifique os dados e tente novamente.",
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 

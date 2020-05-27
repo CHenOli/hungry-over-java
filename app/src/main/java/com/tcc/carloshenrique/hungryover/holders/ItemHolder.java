@@ -13,11 +13,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ItemHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.txtNameItem) public TextView txtItemName;
-    @BindView(R.id.txtPriceItem) public TextView txtItemPrice;
-    @BindView(R.id.imgItem) public ImageView imgItem;
-    @BindView(R.id.btn_ItemAdd) public Button btnItemAdd;
-    @BindView(R.id.btn_ItemInfo) public Button btnItemInfo;
+    @BindView(R.id.txtNameItem)
+    public TextView txtItemName;
+    @BindView(R.id.txtPriceItem)
+    public TextView txtItemPrice;
+    @BindView(R.id.imgItem)
+    public ImageView imgItem;
+    @BindView(R.id.btn_ItemAdd)
+    public Button btnItemAdd;
+    @BindView(R.id.btn_ItemInfo)
+    public Button btnItemInfo;
 
     public int ItemId;
 

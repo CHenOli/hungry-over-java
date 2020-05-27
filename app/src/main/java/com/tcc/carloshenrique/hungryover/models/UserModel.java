@@ -89,13 +89,12 @@ public class UserModel {
         this.image = image;
     }
 
-    public UserModel withImage (String image) {
+    public UserModel withImage(String image) {
         this.image = image;
         return this;
     }
 
-    public UserModel getUserInformation(int userId)
-    {
+    public UserModel getUserInformation(int userId) {
         /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Resources.getSystem().getString(R.string.url))
                 .addConverterFactory(MoshiConverterFactory.create())

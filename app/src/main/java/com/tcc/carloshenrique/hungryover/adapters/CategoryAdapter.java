@@ -39,8 +39,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryHolder> {
         requestOption.fitCenter();
 
         Glide.with(context).load(ApiCategories.get(position).getImage())
-                           .apply(requestOption)
-                           .into(holder.imgCategory);
+                .apply(requestOption)
+                .into(holder.imgCategory);
     }
 
     @Override

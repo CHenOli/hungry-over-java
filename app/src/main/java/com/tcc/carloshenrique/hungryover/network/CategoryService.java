@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 public interface CategoryService {
     @GET("/getcategorias")
     Call<List<CategoryModel>> all();
+
     @GET("/getcategorias/{restaurant_id}")
     Call<List<CategoryModel>> getCategories(@Path(value = "restaurant_id", encoded = true) int id);
 }

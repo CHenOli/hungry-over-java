@@ -30,7 +30,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
+public class CartItemAdapter extends RecyclerView.Adapter<CartItemHolder> {
     private List<ItemModel> OrderItems;
     private Context Context;
     private int Position;
@@ -54,7 +54,8 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
         Position = position;
 
         holder.txtItemName.setText(OrderItems.get(position).getNome());
-        holder.txtItemPrice.setText("R$ " + String.format("%.2f", OrderItems.get(position).getValor()));
+        holder.txtItemPrice.setText("R$ " + String.format("%.2f", OrderItems.get(position)
+                .getValor()));
         int amount = OrderItems.get(position).getAmount();
         holder.txtItemAmount.setText(String.valueOf(amount));
         holder.txtItemCategory.setText("Pizzas");
@@ -64,7 +65,8 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
         holder.btnItemAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                LayoutInflater inflater = (LayoutInflater) Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) Context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view = inflater.inflate(R.layout.dialog_input, null);
 
                 txtAmount = view.findViewById(R.id.inputAmount);
@@ -81,26 +83,29 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
                                     amount = Integer.parseInt(txtAmount.getText().toString());
 
                                 if (amount < 1) {
-                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.", Snackbar.LENGTH_SHORT)
-                                            .setAction("Action", null).show();
+                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.",
+                                            Snackbar.LENGTH_SHORT).setAction("Action",
+                                            null).show();
                                 }
 
                                 int newAmount = OrderItems.get(position).getAmount();
                                 OrderItems.get(position).setAmount(newAmount + amount);
 
-                                Snackbar.make(v, "Itens adicionados com sucesso.", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(v, "Itens adicionados com sucesso.",
+                                        Snackbar.LENGTH_SHORT)
                                         .setAction("Action", null).show();
 
                                 notifyDataSetChanged();
 
-                                ((CartActivity)Context).CalculateValues();
+                                ((CartActivity) Context).CalculateValues();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setNegativeButton(android.R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
+                                    }
+                                })
                         .setView(view)
                         .show();
             }
@@ -109,7 +114,8 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
         holder.btnItemRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                LayoutInflater inflater = (LayoutInflater) Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) Context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view = inflater.inflate(R.layout.dialog_input, null);
 
                 txtAmount = view.findViewById(R.id.inputAmount);
@@ -126,30 +132,33 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
                                     amount = Integer.parseInt(txtAmount.getText().toString());
 
                                 if (amount < 1) {
-                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.", Snackbar.LENGTH_SHORT)
+                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.",
+                                            Snackbar.LENGTH_SHORT)
                                             .setAction("Action", null).show();
                                 }
 
                                 int newAmount = OrderItems.get(position).getAmount() - amount;
-                                if(newAmount < 1) {
+                                if (newAmount < 1) {
                                     OrderItems.remove(position);
-                                }else {
+                                } else {
                                     OrderItems.get(position).setAmount(newAmount);
                                 }
 
-                                Snackbar.make(v, "Itens removidos com sucesso.", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(v, "Itens removidos com sucesso.",
+                                        Snackbar.LENGTH_SHORT)
                                         .setAction("Action", null).show();
 
                                 notifyDataSetChanged();
 
-                                ((CartActivity)Context).CalculateValues();
+                                ((CartActivity) Context).CalculateValues();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setNegativeButton(android.R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
+                                    }
+                                })
                         .setView(view)
                         .show();
             }
@@ -168,7 +177,6 @@ public class CartItemAdapter extends  RecyclerView.Adapter<CartItemHolder> {
     // Método responsável por inserir um novo usuário na lista e notificar que há novos itens.
     private void insertItem(List<ItemModel> orderItems) {
         OrderItems.addAll(orderItems);
-
         notifyItemInserted(getItemCount());
     }
 }

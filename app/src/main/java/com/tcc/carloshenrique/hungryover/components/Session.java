@@ -3,6 +3,7 @@ package com.tcc.carloshenrique.hungryover.components;
 import com.squareup.moshi.Json;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
+
 import java.util.List;
 
 public class Session {

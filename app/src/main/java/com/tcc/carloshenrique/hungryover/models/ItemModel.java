@@ -15,7 +15,7 @@ public class ItemModel {
     private Float valor;
     @Json(name = "quantidade")
     private int amount;
-    
+
     public ItemModel() {
 
     }

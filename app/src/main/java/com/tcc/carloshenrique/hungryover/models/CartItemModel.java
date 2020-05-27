@@ -35,7 +35,7 @@ public class CartItemModel {
     }
 
     public double getPrice() {
-    return price;
+        return price;
     }
 
     public void setPrice(double price) {

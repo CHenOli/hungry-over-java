@@ -38,22 +38,25 @@ public class MaterialSimpleDialog extends AlertDialog {
         mTitle = (TextView) findViewById(android.R.id.text1);
         mContent = (TextView) findViewById(android.R.id.text2);
 
-        mTitle.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_medium.ttf"));
-        mContent.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/roboto_regular.ttf"));
+        mTitle.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/roboto_medium.ttf"));
+        mContent.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                "fonts/roboto_regular.ttf"));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(title != null) {
+        if (title != null) {
             mTitle.setText(title);
             mContent.setText(contentText);
-        }else{
+        } else {
             mTitle.setVisibility(View.GONE);
         }
 
         this.setCanceledOnTouchOutside(canDismiss);
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
     }
 

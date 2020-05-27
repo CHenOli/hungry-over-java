@@ -30,8 +30,10 @@ import static android.graphics.Color.WHITE;
 public class PaymentActivity extends AppCompatActivity {
     String voucher;
 
-    @BindView(R.id.mainToolbar) Toolbar mainToolbar;
-    @BindView(R.id.imgVoucher) ImageView imgVoucher;
+    @BindView(R.id.mainToolbar)
+    Toolbar mainToolbar;
+    @BindView(R.id.imgVoucher)
+    ImageView imgVoucher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -29,7 +29,7 @@ import javax.crypto.spec.PSource;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
     private List<ItemModel> OrderItems = new ArrayList<>();
     private final List<ItemModel> ApiItems;
     private Context context;
@@ -54,7 +54,8 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         requestOption.fitCenter();
 
         holder.txtItemName.setText(ApiItems.get(position).getNome());
-        holder.txtItemPrice.setText("R$ " + String.format("%.2f", ApiItems.get(position).getValor()));
+        holder.txtItemPrice.setText("R$ " + String.format("%.2f",
+                ApiItems.get(position).getValor()));
 
         Glide.with(context).load(ApiItems.get(position).getUrlImage())
                 .apply(requestOption)
@@ -63,7 +64,8 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         holder.btnItemAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view = inflater.inflate(R.layout.dialog_input, null);
 
                 txtAmount = view.findViewById(R.id.inputAmount);
@@ -80,22 +82,25 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
                                     amount = Integer.parseInt(txtAmount.getText().toString());
 
                                 if (amount < 1) {
-                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.", Snackbar.LENGTH_SHORT)
+                                    Snackbar.make(v, "Quantidade não pode ser menor que 1.",
+                                            Snackbar.LENGTH_SHORT)
                                             .setAction("Action", null).show();
                                 }
 
                                 OrderItems.add(ApiItems.get(position));
                                 OrderItems.get(OrderItems.size() - 1).setAmount(amount);
 
-                                Snackbar.make(v, "Itens adicionados com sucesso.", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(v, "Itens adicionados com sucesso.",
+                                        Snackbar.LENGTH_SHORT)
                                         .setAction("Action", null).show();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                        .setNegativeButton(android.R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        })
+                                    }
+                                })
                         .setView(view)
                         .show();
             }
@@ -124,11 +129,11 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemHolder> {
         notifyItemInserted(getItemCount());
     }
 
-    public List<ItemModel> getCartItems(){
-        return  OrderItems;
+    public List<ItemModel> getCartItems() {
+        return OrderItems;
     }
 
-    public void ResetCarItems(){
+    public void ResetCarItems() {
         OrderItems.removeAll(OrderItems);
     }
 }

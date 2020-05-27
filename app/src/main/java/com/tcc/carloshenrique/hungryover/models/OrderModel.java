@@ -1,6 +1,7 @@
 package com.tcc.carloshenrique.hungryover.models;
 
 import com.squareup.moshi.Json;
+
 import java.util.List;
 
 public class OrderModel {

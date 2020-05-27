@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.tcc.carloshenrique.hungryover.dialogs.MaterialSimpleDialog;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
+import com.tcc.carloshenrique.hungryover.network.RetrofitInstance;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import butterknife.ButterKnife;
@@ -27,6 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+
+import static com.tcc.carloshenrique.hungryover.utils.Constants.URL;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -49,7 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Essas linhas escondem a Barra de Notificações
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        // WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -61,15 +65,13 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if(intent.getStringExtra("email") != null && intent.getStringExtra("password") != null) {
+        if (intent.getStringExtra("email") != null &&
+                intent.getStringExtra("password") != null) {
             _emailText.setText(intent.getStringExtra("email"));
             _passwordText.setText(intent.getStringExtra("password"));
             DeactivateFields();
             login();
         }
-
-        _emailText.setText("eduardo@teste.com");
-        _passwordText.setText("123456");
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,12 +106,8 @@ public class LoginActivity extends AppCompatActivity {
         user.setEmail(_emailText.getText().toString());
         user.setPassword(_passwordText.getText().toString());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final UserService clienteService = retrofit.create(UserService.class);
+        final UserService clienteService = RetrofitInstance.getRetrofitInstance()
+                .create(UserService.class);
 
         Call<UserModel> call = clienteService.login(user);
         call.enqueue(new Callback<UserModel>() {
@@ -117,11 +115,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 int statusCode = response.code();
                 user = response.body();
-                if(statusCode == 200)
-                {
+                if (statusCode == 200) {
                     onLoginSuccess();
-                }
-                else {
+                } else {
                     onLoginFailed(false);
                 }
             }
@@ -139,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 10000);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
@@ -166,9 +163,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginFailed(boolean timeout) {
         ActivateFields();
 
-        if(timeout) {
-            Snackbar.make(_loginButton, "Verifique sua conexão e tente novamente.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+        if (timeout) {
+            Snackbar.make(_loginButton, "Verifique sua conexão e tente novamente.",
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
             Snackbar.make(_loginButton, "Login ou senha incorretos.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();

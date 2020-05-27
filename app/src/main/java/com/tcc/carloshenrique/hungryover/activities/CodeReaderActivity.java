@@ -23,6 +23,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.tcc.carloshenrique.hungryover.R;
 import com.tcc.carloshenrique.hungryover.components.Session;
 import com.tcc.carloshenrique.hungryover.models.UserModel;
+import com.tcc.carloshenrique.hungryover.network.RetrofitInstance;
 import com.tcc.carloshenrique.hungryover.network.SessionService;
 
 import java.util.List;
@@ -35,9 +36,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
+import static com.tcc.carloshenrique.hungryover.utils.Constants.URL;
+
 public class CodeReaderActivity extends AppCompatActivity {
-    @BindView(R.id.dbvBarcode) DecoratedBarcodeView _qrScanner;
-    @BindView(R.id.fabProceed) FloatingActionButton _btnProceed;
+    @BindView(R.id.dbvBarcode)
+    DecoratedBarcodeView _qrScanner;
+    @BindView(R.id.fabProceed)
+    FloatingActionButton _btnProceed;
 
     private int idTable;
     private UserModel user = new UserModel();
@@ -79,14 +84,15 @@ public class CodeReaderActivity extends AppCompatActivity {
         finish();
     }
 
-    public void Configure()
-    {
+    public void Configure() {
         InitializeSession();
     }
 
     public boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CAMERA);
         } else {
             return true;
         }
@@ -125,21 +131,16 @@ public class CodeReaderActivity extends AppCompatActivity {
         });
     }
 
-    private void updateText(String text){
+    private void updateText(String text) {
         beepSound();
         idTable = Integer.parseInt(text);
         pauseScanner();
         Configure();
     }
 
-    public void InitializeSession()
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        SessionService sessionService = retrofit.create(SessionService.class);
+    public void InitializeSession() {
+        SessionService sessionService = RetrofitInstance.getRetrofitInstance()
+                .create(SessionService.class);
 
         int idUser = user.getId();
 
@@ -147,7 +148,7 @@ public class CodeReaderActivity extends AppCompatActivity {
         call.enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
-                if(session != null) {
+                if (session != null) {
                     session = response.body();
                     InitializeMenu();
                 } else {

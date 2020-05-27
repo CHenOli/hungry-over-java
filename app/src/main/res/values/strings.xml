@@ -52,7 +52,4 @@
 
     <!-- Cart -->
     <string name="item_amount">"Informe a quantidade:"</string>
-
-    <!-- URL -->
-    <string name="url">http://52.90.180.18:8080</string>
 </resources>

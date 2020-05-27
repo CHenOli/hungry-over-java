@@ -16,8 +16,10 @@ import butterknife.ButterKnife;
 
 public class MyAccountActivity extends AppCompatActivity {
 
-    @BindView(R.id.ctl_myAccount) CollapsingToolbarLayout _ctlMyAccount;
-    @BindView(R.id.tbr_MyAccount) Toolbar _tbrMyAccount;
+    @BindView(R.id.ctl_myAccount)
+    CollapsingToolbarLayout _ctlMyAccount;
+    @BindView(R.id.tbr_MyAccount)
+    Toolbar _tbrMyAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

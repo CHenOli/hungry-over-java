@@ -38,6 +38,7 @@ import com.tcc.carloshenrique.hungryover.network.CategoryService;
 import com.tcc.carloshenrique.hungryover.network.ItemService;
 import com.tcc.carloshenrique.hungryover.network.OrderService;
 import com.tcc.carloshenrique.hungryover.network.RestaurantService;
+import com.tcc.carloshenrique.hungryover.network.RetrofitInstance;
 import com.tcc.carloshenrique.hungryover.network.UserService;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+
+import static com.tcc.carloshenrique.hungryover.utils.Constants.URL;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -78,17 +81,28 @@ public class MenuActivity extends AppCompatActivity
     private TextView txtUserEmail;
     private TextView txtUserName;
 
-    @BindView(R.id.prgMenu) ProgressBar prgMenu;
-    @BindView(R.id.rvwCategories) RecyclerView rvwCategory;
-    @BindView(R.id.rvwItems) RecyclerView rvwItems;
-    @BindView(R.id.scrollItems) ScrollView scrollItems;
-    @BindView(R.id.scrollCategories) ScrollView scrollCategories;
-    @BindView(R.id.mainToolbar) Toolbar mainToolbar;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view) NavigationView navView;
-    @BindView(R.id.txtTapHere) TextView txtTapHere;
-    @BindView(R.id.txtToStart) TextView txtToStart;
-    @BindView(R.id.txtScann) TextView txtScann;
+    @BindView(R.id.prgMenu)
+    ProgressBar prgMenu;
+    @BindView(R.id.rvwCategories)
+    RecyclerView rvwCategory;
+    @BindView(R.id.rvwItems)
+    RecyclerView rvwItems;
+    @BindView(R.id.scrollItems)
+    ScrollView scrollItems;
+    @BindView(R.id.scrollCategories)
+    ScrollView scrollCategories;
+    @BindView(R.id.mainToolbar)
+    Toolbar mainToolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.txtTapHere)
+    TextView txtTapHere;
+    @BindView(R.id.txtToStart)
+    TextView txtToStart;
+    @BindView(R.id.txtScann)
+    TextView txtScann;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +140,8 @@ public class MenuActivity extends AppCompatActivity
         navView.getMenu().getItem(0).setChecked(true);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mainToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mainToolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -147,23 +162,24 @@ public class MenuActivity extends AppCompatActivity
                     .setAction("Action", null).show();
         }
 
-        if(idTable != 0) {
+        if (idTable != 0) {
             Configure();
-            rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory, new RecyclerTouchListener.ClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    scrollCategories.setVisibility(View.GONE);
-                    scrollItems.setVisibility(View.VISIBLE);
+            rvwCategory.addOnItemTouchListener(new RecyclerTouchListener(this, rvwCategory,
+                    new RecyclerTouchListener.ClickListener() {
+                        @Override
+                        public void onClick(View view, int position) {
+                            scrollCategories.setVisibility(View.GONE);
+                            scrollItems.setVisibility(View.VISIBLE);
 
-                    int id = categories.get(position).getId();
-                    getItemData(id);
-                }
+                            int id = categories.get(position).getId();
+                            getItemData(id);
+                        }
 
-                @Override
-                public void onLongClick(View view, int position) {
+                        @Override
+                        public void onLongClick(View view, int position) {
 
-                }
-            }));
+                        }
+                    }));
         } else {
             HideFields();
             notScanned = true;
@@ -203,7 +219,7 @@ public class MenuActivity extends AppCompatActivity
 
     private void Configure() {
         //if(itemAdapter != null)
-            //orderItems = itemAdapter.getCartItems();
+        //orderItems = itemAdapter.getCartItems();
 
         scrollCategories.setVisibility(View.VISIBLE);
         scrollItems.setVisibility(View.GONE);
@@ -218,18 +234,14 @@ public class MenuActivity extends AppCompatActivity
     }
 
     private void getRestaurant(int idMesa) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final RestaurantService restaurantService = retrofit.create(RestaurantService.class);
+        final RestaurantService restaurantService = RetrofitInstance.getRetrofitInstance()
+                .create(RestaurantService.class);
 
         Call<RestaurantModel> call = restaurantService.getId(idMesa);
         call.enqueue((new Callback<RestaurantModel>() {
             @Override
             public void onResponse(Call<RestaurantModel> call, Response<RestaurantModel> response) {
-                if(response.body() != null) {
+                if (response.body() != null) {
                     restaurant = response.body();
                     getCategoryData(restaurant.getId());
                 }
@@ -243,12 +255,8 @@ public class MenuActivity extends AppCompatActivity
     }
 
     public void getUserData(int idUser) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final UserService clientService = retrofit.create(UserService.class);
+        final UserService clientService = RetrofitInstance.getRetrofitInstance()
+                .create(UserService.class);
 
         Call<UserModel> call = clientService.getUser(idUser);
         call.enqueue(new Callback<UserModel>() {
@@ -271,23 +279,21 @@ public class MenuActivity extends AppCompatActivity
     }
 
     public void getCategoryData(int idRestaurant) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final CategoryService categoryService = retrofit.create(CategoryService.class);
+        final CategoryService categoryService = RetrofitInstance.getRetrofitInstance()
+                .create(CategoryService.class);
 
         Call<List<CategoryModel>> call = categoryService.getCategories(idRestaurant);
         call.enqueue(new Callback<List<CategoryModel>>() {
             @Override
-            public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
+            public void onResponse(Call<List<CategoryModel>> call,
+                                   Response<List<CategoryModel>> response) {
                 int statusCode = response.code();
-                if(response.body() != null) {
+                if (response.body() != null) {
                     categories.addAll(response.body());
                     setupCategoryRecycler();
                 }
             }
+
             @Override
             public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
                 call.cancel();
@@ -296,12 +302,8 @@ public class MenuActivity extends AppCompatActivity
     }
 
     public void getItemData(int idCategory) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final ItemService itemService = retrofit.create(ItemService.class);
+        final ItemService itemService = RetrofitInstance.getRetrofitInstance()
+                .create(ItemService.class);
 
         Call<List<ItemModel>> call = itemService.getAll(idCategory);
         call.enqueue(new Callback<List<ItemModel>>() {
@@ -311,6 +313,7 @@ public class MenuActivity extends AppCompatActivity
                 items.addAll(response.body());
                 setupItemRecycler(items);
             }
+
             @Override
             public void onFailure(Call<List<ItemModel>> call, Throwable t) {
                 call.cancel();
@@ -362,13 +365,13 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.menu_my_cart) {
-            if(itemAdapter == null) {
+            if (itemAdapter == null) {
                 Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             } else {
                 orderItems.addAll(itemAdapter.getCartItems());
 
-                if(orderItems.size() > 0) {
+                if (orderItems.size() > 0) {
                     SendOrder();
                     itemAdapter.ResetCarItems();
                 } else {
@@ -385,12 +388,8 @@ public class MenuActivity extends AppCompatActivity
     private void SendOrder() {
         order = new OrderModel(user.getId(), idSession, orderItems, "");
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final OrderService orderService = retrofit.create(OrderService.class);
+        final OrderService orderService = RetrofitInstance.getRetrofitInstance()
+                .create(OrderService.class);
 
         Call<OrderModel> call = orderService.sendOrder(order);
         call.enqueue(new Callback<OrderModel>() {
@@ -435,21 +434,19 @@ public class MenuActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         HideFieldsLoading();
 
         Intent intent = getIntent();
-        try
-        {
+        try {
             idOrder = intent.getIntExtra("idOrder", 0);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
 
-        if(!firstLaunch)
+        if (!firstLaunch)
             Configure();
 
         firstLaunch = false;
@@ -465,7 +462,7 @@ public class MenuActivity extends AppCompatActivity
     }
 
     public void HideFieldsLoading() {
-        if(!notScanned) {
+        if (!notScanned) {
             scrollItems.setVisibility(View.GONE);
             scrollCategories.setEnabled(false);
             scrollCategories.setVisibility(View.GONE);

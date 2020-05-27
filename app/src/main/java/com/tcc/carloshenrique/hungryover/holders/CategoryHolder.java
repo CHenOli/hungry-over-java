@@ -11,9 +11,11 @@ import com.tcc.carloshenrique.hungryover.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CategoryHolder extends RecyclerView.ViewHolder{
-    @BindView(R.id.txtCategory) public TextView txtCategory;
-    @BindView(R.id.imgCategory) public ImageView imgCategory;
+public class CategoryHolder extends RecyclerView.ViewHolder {
+    @BindView(R.id.txtCategory)
+    public TextView txtCategory;
+    @BindView(R.id.imgCategory)
+    public ImageView imgCategory;
 
     private RecyclerView.RecyclerListener recycleListener;
 

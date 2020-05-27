@@ -26,7 +26,9 @@ import com.tcc.carloshenrique.hungryover.components.Session;
 import com.tcc.carloshenrique.hungryover.models.ItemModel;
 import com.tcc.carloshenrique.hungryover.models.OrderModel;
 import com.tcc.carloshenrique.hungryover.network.OrderService;
+import com.tcc.carloshenrique.hungryover.network.RetrofitInstance;
 import com.tcc.carloshenrique.hungryover.network.SessionService;
+import com.tcc.carloshenrique.hungryover.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
+import static com.tcc.carloshenrique.hungryover.utils.Constants.URL;
+
 public class CartActivity extends AppCompatActivity {
     private List<ItemModel> items = new ArrayList<>();
     private CartItemAdapter cartItemAdapter;
@@ -49,11 +53,16 @@ public class CartActivity extends AppCompatActivity {
 
     private OrderModel order = new OrderModel();
 
-    @BindView(R.id.rvwOrderItems) RecyclerView rvwOrderItems;
-    @BindView(R.id.mainToolbar) Toolbar mainToolbar;
-    @BindView(R.id.txtTotal) TextView txtTotal;
-    @BindView(R.id.btnPay) Button btnPay;
-    @BindView(R.id.btnDivide) Button btnDivide;
+    @BindView(R.id.rvwOrderItems)
+    RecyclerView rvwOrderItems;
+    @BindView(R.id.mainToolbar)
+    Toolbar mainToolbar;
+    @BindView(R.id.txtTotal)
+    TextView txtTotal;
+    @BindView(R.id.btnPay)
+    Button btnPay;
+    @BindView(R.id.btnDivide)
+    Button btnDivide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +91,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!items.isEmpty()) {
                     SendPayment(false);
-                }else{
+                } else {
                     Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -109,7 +118,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!items.isEmpty()) {
                     SendPayment(true);
-                }else{
+                } else {
                     Snackbar.make(mainToolbar, "O carrinho está vazio.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -122,12 +131,8 @@ public class CartActivity extends AppCompatActivity {
     private void SendPayment(boolean divide) {
         int divideNumber = 0;
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final SessionService sessionService = retrofit.create(SessionService.class);
+        final SessionService sessionService = RetrofitInstance.getRetrofitInstance()
+                .create(SessionService.class);
 
         if (divide)
             divideNumber = 1;
@@ -137,7 +142,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 Intent intent = new Intent(context, PaymentActivity.class);
-                if(voucher.isEmpty()) {
+                if (voucher.isEmpty()) {
                     voucher = UUID.randomUUID().toString();
                 }
 
@@ -158,12 +163,8 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getOrderData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.url))
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-
-        final OrderService orderService = retrofit.create(OrderService.class);
+        final OrderService orderService = RetrofitInstance.getRetrofitInstance()
+                .create(OrderService.class);
 
         Call<OrderModel> call = orderService.getOrder(order.getId());
         call.enqueue(new Callback<OrderModel>() {
@@ -201,7 +202,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
 
